@@ -1,0 +1,446 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}Le Marche{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* BODY */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background: #f3f4f6;
+      color: #0f172a;
+    }
+
+    /* 🌈 GRADIENT DARK MODE BACKGROUND */
+    body.dark-mode {
+      background:
+        radial-gradient(circle at top, #1f2937 0, #020617 40%, #000 100%);
+      color: #e5e7eb;
+    }
+
+    /* 🧊 GLASSMORPHISM NAVBAR – LIGHT MODE */
+    .navbar {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(248, 250, 252, 0.88) !important;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.45);
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+      color: #020617 !important;
+    }
+
+    .navbar .nav-link:hover {
+      color: #111827 !important;
+    }
+
+    /* 🧊 GLASS + GRADIENT – DARK MODE NAVBAR */
+    body.dark-mode .navbar {
+      background: linear-gradient(
+        120deg,
+        rgba(15, 23, 42, 0.9),
+        rgba(30, 64, 175, 0.85)
+      ) !important;
+      border-bottom: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    body.dark-mode .navbar .navbar-brand,
+    body.dark-mode .navbar .nav-link {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .navbar .nav-link:hover {
+      color: #f9fafb !important;
+    }
+
+    /* SEARCH BAR */
+    .search-wrapper {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 999px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+      backdrop-filter: blur(10px);
+    }
+
+    body.dark-mode .search-wrapper {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      color: inherit;
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* 🔍 SEARCH BUTTON – CLEAN ROUND ICON, NO BRACKET */
+    .search-btn {
+      border: none;
+      background: transparent;
+      border-radius: 999px;
+      padding: 4px 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .search-btn img {
+      display: block;
+    }
+
+    .search-btn:hover {
+      background: rgba(148, 163, 184, 0.25);
+    }
+
+    body.dark-mode .search-btn:hover {
+      background: rgba(148, 163, 184, 0.35);
+    }
+
+    .search-btn:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* THEME TOGGLE BUTTON ANIMATION */
+    #themeToggle {
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.15rem;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    #themeToggle:hover {
+      background: rgba(148, 163, 184, 0.25);
+      transform: translateY(-1px);
+    }
+
+    #themeToggle.theme-toggle-anim {
+      animation: toggle-bounce 0.35s ease;
+    }
+
+    #themeIcon {
+      width: 30px;
+      height: 30px;
+      transition: transform 0.35s ease, filter 0.3s ease;
+    }
+
+    @keyframes toggle-bounce {
+      0%   { transform: scale(1) rotate(0deg); }
+      35%  { transform: scale(1.2) rotate(20deg); }
+      70%  { transform: scale(0.95) rotate(-10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    /* FOOTER */
+    footer.footer-main {
+      background-color: #060606 !important;
+      color: #e5e7eb !important;
+      font-size: 0.8rem;
+      padding-top: 1.6rem;
+      padding-bottom: 1rem;
+    }
+
+    .footer-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .footer-logo-img {
+      height: 60px;
+      width: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .map-embed {
+      border-radius: 0.6rem;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      max-width: 260px;
+      margin-left: auto;
+    }
+
+    .map-embed iframe {
+      width: 100%;
+      height: 160px;
+      border: 0;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(148, 163, 184, 0.35);
+      margin-top: 1rem;
+      padding-top: 0.5rem;
+    }
+
+    /* extra small navbar helpers */
+    .nav-icon-btn {
+      border: none;
+      background: transparent;
+      padding: 0.25rem 0.4rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-username {
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 991.98px) {
+      .navbar-search-form {
+        width: 100%;
+        margin-top: 0.75rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg shadow-sm sticky-top" id="mainNavbar">
+  <div class="container">
+
+    <!-- BRAND -->
+    <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+      Le Marche
+    </a>
+
+    <!-- TOGGLER (MOBILE) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- NAV CONTENT -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- LEFT: MAIN LINKS -->
+      <ul class="navbar-nav me-auto align-items-center gap-2">
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'product' %}">Products</a>
+        </li>
+
+        <!-- CATEGORY DROPDOWN -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+          <ul class="dropdown-menu">
+            {% if nav_categories %}
+              {% for cat in nav_categories %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'product' %}?category={{ cat }}">
+                    {{ cat }}
+                  </a>
+                </li>
+              {% endfor %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-semibold" href="{% url 'product' %}">All Products</a></li>
+            {% else %}
+              <li><span class="dropdown-item-text text-muted">No categories yet</span></li>
+            {% endif %}
+          </ul>
+        </li>
+
+        
+
+      </ul>
+
+      <!-- RIGHT: SEARCH + USER + THEME -->
+      <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+
+        <!-- SEARCH BAR -->
+        <form method="GET"
+              action="{% url 'product' %}"
+              class="navbar-search-form d-flex align-items-center">
+          <div class="search-wrapper w-100">
+            <input class="form-control search-input ps-3"
+                   type="search"
+                   name="q"
+                   value="{{ request.GET.q }}"
+                   placeholder="Search products..."
+                   style="width: 220px;">
+            <button class="search-btn" type="submit" aria-label="Search">
+              <img src="https://cdn-icons-png.flaticon.com/128/10469/10469570.png"
+                   height="16" alt="">
+            </button>
+          </div>
+        </form>
+
+        <!-- USER / AUTH + THEME -->
+        <ul class="navbar-nav align-items-center ms-lg-2 gap-1">
+
+          {% if user.is_authenticated %}
+
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'cart' %}">🛒 Cart</a>
+        </li>
+        
+            <li class="nav-item d-flex align-items-center">
+              <span class="nav-link nav-username d-flex align-items-center">
+                👋 {{ user.username }}
+                {% if user.is_staff %}
+                  <span class="badge rounded-pill text-bg-dark ms-2">
+                    Admin
+                  </span>
+                {% endif %}
+              </span>
+            </li>
+
+            {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_products' %}">Add Products</a>
+              </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+
+          {% else %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+
+          {% endif %}
+
+          <!-- 🌞 / 🌙 THEME TOGGLE – ALWAYS LAST -->
+          <li class="nav-item">
+            <button id="themeToggle" class="nav-icon-btn">
+              <img id="themeIcon"
+                   src="https://cdn-icons-png.flaticon.com/128/581/581601.png"
+                   alt="Toggle theme">
+            </button>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main>
+  {% block content %}
+  {% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="footer-main mt-4">
+  <div class="container py-3">
+
+    <div class="row g-3 align-items-start">
+
+      <!-- FOOTER LOGO -->
+      <div class="col-12 d-flex align-items-center mb-3">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFbL4rcWiXJ4idnrzuxwyN_lyOwzmChrSoRQ&usqp=CAU"
+             alt="Le Marche Logo"
+             class="footer-logo-img">
+      </div>
+
+      <!-- ABOUT -->
+      <div class="col-12 col-md-4">
+        <h6 class="footer-title mb-1">Le Marche</h6>
+        <p class="mb-1">Premium gadgets, laptops and accessories.</p>
+        <p class="mb-0">Malappuram’s trusted tech store.</p>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="col-12 col-md-4">
+        <h6 class="footer-title mb-1">Contact</h6>
+        <p class="mb-1">Kalad Road</p>
+        <p class="mb-1">Thanalur, Moolakkal</p>
+        <p class="mb-1">Malappuram, Kerala</p>
+        <p class="mb-2">📞 +91-8129159207</p>
+      </div>
+
+      <!-- MAP -->
+      <div class="col-12 col-md-4 d-flex justify-content-md-end">
+        <div class="map-embed">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.6298944350888!2d75.8862178!3d10.965597100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ad8657cf4e4d%3A0xbd09690538bf01a5!2sTirur%20-%20Tanur%20Rd%2C%20Moolakkal%2C%20Thanalur%2C%20Kerala!5e1!3m2!1sen!2sin!4v1764343835387!5m2!1sen!2sin"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between small">
+      <span>© {{ now|date:"Y" }} Le Marche. All rights reserved.</span>
+      <span>Built with / in Kerala.</span>
+    </div>
+
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 🌗 THEME TOGGLE LOGIC -->
+<script>
+  const body = document.body;
+  const toggleBtn = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+
+  const sunIcon = "https://cdn-icons-png.flaticon.com/128/869/869869.png";
+  const moonIcon = "https://cdn-icons-png.flaticon.com/128/581/581601.png";
+
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    body.classList.add("dark-mode");
+    themeIcon.src = sunIcon;
+  } else {
+    themeIcon.src = moonIcon;
+  }
+
+  toggleBtn.onclick = () => {
+    toggleBtn.classList.add("theme-toggle-anim");
+    setTimeout(() => toggleBtn.classList.remove("theme-toggle-anim"), 350);
+
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+      themeIcon.src = sunIcon;
+      localStorage.setItem("theme", "dark");
+    } else {
+      themeIcon.src = moonIcon;
+      localStorage.setItem("theme", "light");
+    }
+  };
+</script>
+
+</body>
+</html>

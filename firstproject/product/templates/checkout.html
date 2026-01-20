@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block title %}Checkout – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Checkout</h2>
+
+  {% if cart_items %}
+    <ul class="list-group mb-3">
+      {% for item in cart_items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ item.product.p_name }}</strong><br>
+            <small class="text-muted">Qty: {{ item.quantity }}</small>
+          </div>
+          <span>₹{{ item.product.p_price }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="fw-bold">Total:</span>
+      <span class="fw-bold fs-5">₹{{ cart_total }}</span>
+    </div>
+
+    <div class="alert alert-info">
+      Payment integration not added yet. This is just a placeholder checkout page.
+    </div>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+</div>
+{% endblock %}

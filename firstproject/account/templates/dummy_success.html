@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2 class="text-success">Payment Successful 🎉</h2>
+    <p>Your order has been placed successfully.</p>
+
+    <a href="{% url 'home' %}" class="btn btn-dark mt-3">
+        Back to Home
+    </a>
+</div>
+{% endblock %}

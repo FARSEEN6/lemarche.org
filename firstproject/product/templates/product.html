@@ -1,0 +1,313 @@
+{% extends "index.html"%}
+
+{% block title %}Products – Le Marche{% endblock %}
+
+{% block content %}
+
+<!-- AOS (scroll animation) -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+  /* PAGE WRAPPER */
+  .products-section {
+    background: #f3f4f6;
+  }
+  body.dark-mode .products-section {
+    background: #020617;
+  }
+
+  /* CARD */
+  .product-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    border-color: #d1d5db;
+  }
+
+  body.dark-mode .product-card {
+    background: #020617;
+    border-color: #1f2937;
+  }
+
+  body.dark-mode .product-card:hover {
+    border-color: #334155;
+    box-shadow: 0 12px 28px rgba(15,23,42,0.6);
+  }
+
+  /* IMAGE */
+  .product-img {
+    height: 190px;
+    object-fit: cover;
+    transition: 0.4s ease;
+    width: 100%;
+  }
+
+  .product-card:hover .product-img {
+    transform: scale(1.06);
+  }
+
+  /* Carousel controls */
+  .carousel-control-prev, .carousel-control-next {
+    width: 15%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .product-card:hover .carousel-control-prev,
+  .product-card:hover .carousel-control-next {
+    opacity: 1;
+  }
+
+  /* PRICE FADE */
+  .price-text {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .product-card:hover .price-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  body.dark-mode .price-text {
+    color: #f9fafb;
+  }
+
+  /* TITLE + META TEXT */
+  .product-title {
+    min-height: 40px;
+    font-size: 0.98rem;
+    font-weight: 600;
+  }
+
+  .product-meta {
+    font-size: 0.8rem;
+  }
+
+  body.dark-mode .product-title,
+  body.dark-mode .product-meta {
+    color: #e5e7eb;
+  }
+
+  /* BADGE */
+  .product-badge {
+    background: #f3f4f6;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+  }
+
+  body.dark-mode .product-badge {
+    background: #020617;
+    color: #e5e7eb;
+    border-color: #374151;
+  }
+
+  /* BUTTONS */
+  .btn-small {
+    padding: 6px 10px !important;
+    border-radius: 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+  }
+
+  .btn-view {
+    background:#111827;
+    color:#fff;
+  }
+  .btn-view:hover {
+    background:#000;
+    color:#fff;
+  }
+
+  .btn-cart {
+    border-color:#d1d5db;
+  }
+
+  .btn-buy {
+    border-color:#22c55e;
+    color:#15803d;
+  }
+  .btn-buy:hover {
+    background:#16a34a;
+    color:#fff;
+  }
+
+  /* Dark-mode outlines */
+  body.dark-mode .btn-outline-dark {
+    border-color:#e5e7eb;
+    color:#e5e7eb;
+  }
+  body.dark-mode .btn-outline-dark:hover {
+    background:#e5e7eb;
+    color:#020617;
+  }
+
+  body.dark-mode .btn-view {
+    background:#f9fafb;
+    color:#020617;
+  }
+  body.dark-mode .btn-view:hover {
+    background:#e5e7eb;
+    color:#020617;
+  }
+</style>
+
+<div class="products-section">
+  <div class="container py-5">
+
+    <!-- CAROUSEL -->
+    <div id="carouselExampleAutoplaying"
+         class="carousel slide mb-5"
+         data-bs-ride="carousel"
+         data-bs-interval="3000">
+
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Thumbnail_Option-2.width-1300.jpg"
+               class="d-block w-100" style="height:330px; object-fit:cover;">
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+               class="d-block w-100" style="height:330px; object-fit:cover;">
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
+               class="d-block w-100" style="height:330px; object-fit:cover;">
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button"
+              data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+
+      <button class="carousel-control-next" type="button"
+              data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+
+    <h2 class="fw-bold mb-4">Our Products</h2>
+
+    <!-- PRODUCT GRID -->
+    <div class="row g-4">
+      {% for prod in products %}
+        <div class="col-6 col-md-4 col-lg-3"
+             data-aos="fade-up"
+             data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+
+          <div class="product-card">
+
+            {% comment %} Check if product has multiple images {% endcomment %}
+            {% if prod.p_image2 or prod.p_image3 or prod.p_image4 %}
+              {%comment%} Multiple images - show carousel {%endcomment%}
+              <div id="prodCarousel{{ prod.id }}" class="carousel slide" data-bs-ride="false">
+                <div class="carousel-inner">
+                  {% if prod.p_image %}
+                    <div class="carousel-item active">
+                      <img src="{{ prod.p_image.url }}" loading="lazy" class="product-img">
+                    </div>
+                  {% endif %}
+                  {% if prod.p_image2 %}
+                    <div class="carousel-item {% if not prod.p_image %}active{% endif %}">
+                      <img src="{{ prod.p_image2.url }}" loading="lazy" class="product-img">
+                    </div>
+                  {% endif %}
+                  {% if prod.p_image3 %}
+                    <div class="carousel-item {% if not prod.p_image and not prod.p_image2 %}active{% endif %}">
+                      <img src="{{ prod.p_image3.url }}" loading="lazy" class="product-img">
+                    </div>
+                  {% endif %}
+                  {% if prod.p_image4 %}
+                    <div class="carousel-item {% if not prod.p_image and not prod.p_image2 and not prod.p_image3 %}active{% endif %}">
+                      <img src="{{ prod.p_image4.url }}" loading="lazy" class="product-img">
+                    </div>
+                  {% endif %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" style="filter: invert(1); width: 20px; height: 20px;"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" style="filter: invert(1); width: 20px; height: 20px;"></span>
+                </button>
+                <div class="carousel-indicators" style="bottom: 5px; margin: 0;">
+                  {% if prod.p_image %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="0" class="active" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
+                  {% if prod.p_image2 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
+                  {% if prod.p_image3 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image and prod.p_image2 %}2{% elif prod.p_image or prod.p_image2 %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
+                  {% if prod.p_image4 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image and prod.p_image2 and prod.p_image3 %}3{% elif prod.p_image and prod.p_image2 or prod.p_image and prod.p_image3 or prod.p_image2 and prod.p_image3 %}2{% elif prod.p_image or prod.p_image2 or prod.p_image3 %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
+                </div>
+              </div>
+            {% else %}
+              {%comment%} Single image {%endcomment%}
+              {% if prod.p_image %}
+                <img src="{{ prod.p_image.url }}" loading="lazy" class="product-img">
+              {% else %}
+                <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg" loading="lazy" class="product-img">
+              {% endif %}
+            {% endif %}
+
+            <div class="p-3">
+
+              <h6 class="product-title mb-1">
+                {{ prod.p_name|truncatechars:35 }}
+              </h6>
+
+              <span class="badge product-badge mb-2">
+                {{ prod.p_category }}
+              </span>
+
+              <!-- PRICE (fade in on hover) -->
+              <p class="price-text mb-1">₹{{ prod.p_price }}</p>
+
+              <!-- BUTTONS -->
+              <div class="d-grid gap-2 mt-3">
+
+                <a href="{% url 'detail_page' prod.id %}"
+                   class="btn btn-small btn-view">
+                  View Details
+                </a>
+
+                <a href="{% url 'add_to_cart' prod.id %}"
+                   class="btn btn-small btn-outline-secondary btn-cart">
+                  Add to Cart
+                </a>
+
+                {% if prod.p_link %}
+                  <a href="{{ prod.p_link }}"
+                     target="_blank"
+                     class="btn btn-small btn-outline-success btn-buy">
+                    Buy Now
+                  </a>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 700,
+    easing: 'ease-out',
+    once: false,
+  });
+</script>
+
+{% endblock %}

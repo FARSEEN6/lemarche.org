@@ -1,0 +1,98 @@
+{% extends "index.html" %}
+
+{% block title %}Edit {{ product.p_name }} – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="card shadow-lg p-4" style="border-radius: 12px;">
+        <h3 class="mb-4">Edit Product</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            {{ form.p_name }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Product Category</label>
+            {{ form.p_category }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            {{ form.p_description }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Link</label>
+            {{ form.p_link }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            {{ form.p_price }}
+          </div>
+
+          <hr>
+          <h5 class="mb-3">Images</h5>
+
+          <!-- Main image -->
+          <div class="mb-3">
+            <label class="form-label">Main Image</label>
+            {% if product.p_image %}
+              <div class="mb-2">
+                <img src="{{ product.p_image.url }}" style="width: 120px; height: 120px; object-fit: cover;" class="img-thumbnail">
+              </div>
+            {% endif %}
+            {{ form.p_image }}
+          </div>
+
+          <!-- Second image -->
+          <div class="mb-3">
+            <label class="form-label">Second Image</label>
+            {% if product.p_image2 %}
+              <div class="mb-2">
+                <img src="{{ product.p_image2.url }}" style="width: 120px; height: 120px; object-fit: cover;" class="img-thumbnail">
+              </div>
+            {% endif %}
+            {{ form.p_image2 }}
+          </div>
+
+          <!-- Third image -->
+          <div class="mb-3">
+            <label class="form-label">Third Image</label>
+            {% if product.p_image3 %}
+              <div class="mb-2">
+                <img src="{{ product.p_image3.url }}" style="width: 120px; height: 120px; object-fit: cover;" class="img-thumbnail">
+              </div>
+            {% endif %}
+            {{ form.p_image3 }}
+          </div>
+
+          <!-- Fourth image -->
+          <div class="mb-3">
+            <label class="form-label">Fourth Image</label>
+            {% if product.p_image4 %}
+              <div class="mb-2">
+                <img src="{{ product.p_image4.url }}" style="width: 120px; height: 120px; object-fit: cover;" class="img-thumbnail">
+              </div>
+            {% endif %}
+            {{ form.p_image4 }}
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

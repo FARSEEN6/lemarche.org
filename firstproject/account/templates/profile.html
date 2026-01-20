@@ -1,0 +1,95 @@
+{% extends "index.html" %}
+
+{% block title %}Profile – Le Marche{% endblock %}
+
+{% block content %}
+
+<style>
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    color: #fff;
+  }
+</style>
+
+<div class="py-5" style="min-height: 80vh;">
+  <div class="container d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg border-0" style="max-width: 480px; width: 100%; border-radius: 1.25rem;">
+
+      {% if user.is_authenticated %}
+        <div class="card-body p-4 p-md-5">
+
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="d-flex align-items-center">
+              <div class="profile-avatar me-3">
+                {{ user.username|first|upper }}
+              </div>
+              <div>
+                <h4 class="mb-1">Hey, {{ user.username }}</h4>
+                <p class="text-muted mb-0">Welcome to your profile 👋</p>
+              </div>
+            </div>
+
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+              ● Online
+            </span>
+          </div>
+
+          <hr class="my-4">
+
+          <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 0.06em;">
+            Account details
+          </h6>
+
+          <div class="mb-3">
+            <span class="text-muted d-block small">Username</span>
+            <span class="fw-semibold">{{ user.username }}</span>
+          </div>
+
+          {% if user.email %}
+          <div class="mb-3">
+            <span class="text-muted d-block small">Email</span>
+            <span class="fw-semibold">{{ user.email }}</span>
+          </div>
+          {% endif %}
+
+          <div class="mb-4">
+            <span class="text-muted d-block small">Member since</span>
+            <span class="fw-semibold">
+              {{ user.date_joined|date:"F j, Y" }}
+            </span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="{% url 'product' %}" class="btn btn-outline-primary flex-grow-1">
+              🛒 View Products
+            </a>
+            <a href="{% url 'logout' %}" class="btn btn-danger flex-grow-1">
+              Logout
+            </a>
+          </div>
+
+        </div>
+      {% else %}
+        <div class="card-body p-4 p-md-5 text-center">
+          <h4 class="mb-3">You’re not logged in</h4>
+          <p class="text-muted mb-4">
+            Please log in to view your profile and manage your account.
+          </p>
+          <a href="{% url 'login' %}" class="btn btn-primary w-100 mb-2">Go to Login</a>
+          <a href="{% url 'register' %}" class="btn btn-outline-secondary w-100">Create an Account</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

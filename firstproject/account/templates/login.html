@@ -1,0 +1,217 @@
+{% extends "index.html" %}
+
+{% block title %}Login – Le Marche{% endblock %}
+
+{% block content %}
+<style>
+  .login-hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(16,185,129,0.09), transparent 55%);
+  }
+
+  .login-card {
+    width: 420px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.6s ease-out;
+  }
+
+  .login-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(16,185,129,0.8));
+    -webkit-mask: 
+      linear-gradient(#000 0 0) content-box, 
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .login-card-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .login-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(15,23,42,0.03);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .login-floating-shape {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #4ade80, #22c55e);
+    filter: blur(3px);
+    opacity: 0.25;
+    top: -16px;
+    right: -20px;
+    animation: float 4.5s ease-in-out infinite alternate;
+  }
+
+  .login-floating-shape-2 {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 20% 20%, #60a5fa, #2563eb);
+    filter: blur(3px);
+    opacity: 0.18;
+    bottom: -18px;
+    left: -18px;
+    animation: float2 5s ease-in-out infinite alternate;
+  }
+
+  .login-input:focus {
+    box-shadow: 0 0 0 1px rgba(59,130,246,0.8);
+    border-color: rgba(59,130,246,0.9);
+  }
+
+  .btn-login-animated {
+    position: relative;
+    overflow: hidden;
+    border-radius: 999px;
+  }
+
+  .btn-login-animated::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #2563eb, #16a34a);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .btn-login-animated span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-login-animated:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes float {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(-6px, 8px); }
+  }
+
+  @keyframes float2 {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(8px, -8px); }
+  }
+</style>
+
+<div class="login-hero">
+  <div class="card shadow-lg p-4 login-card bg-white bg-opacity-90">
+    <div class="login-card-inner">
+
+      <div class="login-floating-shape"></div>
+      <div class="login-floating-shape-2"></div>
+
+      <div class="text-center mb-3">
+        <div class="login-badge mb-2">
+          <span>🔐</span> <span>Secure Login</span>
+        </div>
+        <h3 class="mb-1">Welcome back</h3>
+        <p class="text-muted mb-0" style="font-size: 0.9rem;">
+          Sign in to manage your cart and orders.
+        </p>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert 
+            {% if message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'success' %}alert-success
+            {% else %}alert-info
+            {% endif %}
+          " role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if user.is_authenticated %}
+        <div class="alert alert-info text-center">
+          You are already logged in as <strong>{{ user.username }}</strong>.
+        </div>
+        <a href="{% url 'profile' %}" class="btn btn-primary w-100">Go to Profile</a>
+      {% else %}
+        <form method="POST" autocomplete="off" novalidate>
+          {% csrf_token %}
+
+          <!-- fake fields to reduce browser auto-fill -->
+          <input type="text" style="display:none" autocomplete="username">
+          <input type="password" style="display:none" autocomplete="new-password">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">User Name</label>
+            <input type="text"
+                   name="username"
+                   class="form-control login-input"
+                   placeholder="Enter username"
+                   autocomplete="off"
+                   autocapitalize="off"
+                   spellcheck="false">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password"
+                   name="password"
+                   class="form-control login-input"
+                   placeholder="Enter password"
+                   autocomplete="new-password">
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <small class="text-muted">Use your Le Marche account.</small>
+            <!-- optional future link -->
+            <!-- <a href="#" class="small">Forgot password?</a> -->
+          </div>
+
+          <button type="submit"
+                  class="btn btn-primary w-100 py-2 btn-login-animated">
+            <span>Login</span>
+          </button>
+        </form>
+
+        <p class="text-center mt-3 mb-0" style="font-size: 0.9rem;">
+          New here?
+          <a href="{% url 'register' %}" class="fw-semibold">Create an account</a>
+        </p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

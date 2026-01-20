@@ -1,0 +1,76 @@
+{% extends "index.html" %}
+
+{% block title %}Register – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+
+  <div class="card shadow-lg p-4" style="width: 420px; border-radius: 16px;">
+    <div class="text-center mb-3">
+      <div class="rounded-circle d-inline-flex justify-content-center align-items-center mb-2"
+           style="width: 60px; height: 60px; background: rgba(25,135,84,0.1);">
+        <span style="font-size: 28px;">📝</span>
+      </div>
+      <h3 class="mb-1">Create an account</h3>
+      <p class="text-muted mb-0" style="font-size: 0.9rem;">
+        Join Le Marche to shop and manage your cart easily.
+      </p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert 
+          {% if message.tags == 'error' %}alert-danger
+          {% elif message.tags == 'success' %}alert-success
+          {% else %}alert-info
+          {% endif %}
+        " role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form action="" method="POST" autocomplete="off" novalidate>
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">User Name</label>
+        <input type="text"
+               name="username"
+               class="form-control"
+               placeholder="Choose a username"
+               autocomplete="off"
+               autocapitalize="off"
+               spellcheck="false">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label fw-semibold">Password</label>
+        <input type="password"
+               name="password"
+               class="form-control"
+               placeholder="Create a password"
+               autocomplete="new-password">
+      </div>
+
+      <div class="mb-3">
+        <small class="text-muted">
+          Use at least <strong>4 characters</strong>. Don’t share your password with anyone.
+        </small>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 py-2">
+        Create Account
+      </button>
+    </form>
+
+    <hr class="my-4">
+
+    <p class="text-center mb-0" style="font-size: 0.9rem;">
+      Already have an account?
+      <a href="{% url 'login' %}" class="fw-semibold">Login here</a>
+    </p>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+
+{% block title %}Add Product – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="card shadow-lg p-4" style="border-radius: 12px;">
+        <h3 class="mb-4">Add New Product</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            {{ form.p_name }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Product Category</label>
+            {{ form.p_category }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Product Description</label>
+            {{ form.p_description }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Link</label>
+            {{ form.p_link }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            {{ form.p_price }}
+          </div>
+
+          <!-- 🖼 MULTIPLE IMAGES -->
+          <div class="mb-3">
+            <label class="form-label">Main Image</label>
+            {{ form.p_image }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Second Image</label>
+            {{ form.p_image2 }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Third Image</label>
+            {{ form.p_image3 }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Fourth Image</label>
+            {{ form.p_image4 }}
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
