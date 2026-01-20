@@ -16,7 +16,7 @@ from product.form import productForm  # ⬅ adjust to product.forms if needed
 def login_view(request):
     # already logged in user → go to profile
     if request.user.is_authenticated:
-        return redirect("profile")
+        return redirect("home")
 
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
@@ -27,7 +27,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Login successful.")
-            return redirect("profile")  # make sure URL name is 'profile'
+            return redirect("home")  # make sure URL name is 'profile'
         else:
             messages.error(request, "Invalid username or password.")
 

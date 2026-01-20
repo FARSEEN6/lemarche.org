@@ -164,7 +164,7 @@
         <div class="alert alert-info text-center">
           You are already logged in as <strong>{{ user.username }}</strong>.
         </div>
-        <a href="{% url 'profile' %}" class="btn btn-primary w-100">Go to Profile</a>
+        <a href="{% url 'home' %}" class="btn btn-primary w-100">Go to Profile</a>
       {% else %}
         <form method="POST" autocomplete="off" novalidate>
           {% csrf_token %}

@@ -8,7 +8,7 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-  /* PAGE WRAPPER */
+  /* PAGE WRAPPER (so background looks good in both modes) */
   .products-section {
     background: #f3f4f6;
   }
@@ -51,17 +51,6 @@
 
   .product-card:hover .product-img {
     transform: scale(1.06);
-  }
-
-  /* Carousel controls */
-  .carousel-control-prev, .carousel-control-next {
-    width: 15%;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .product-card:hover .carousel-control-prev,
-  .product-card:hover .carousel-control-next {
-    opacity: 1;
   }
 
   /* PRICE FADE */
@@ -160,6 +149,28 @@
     background:#e5e7eb;
     color:#020617;
   }
+
+  /* QUICK VIEW MODAL */
+  .quick-modal-img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    max-height: 320px;
+  }
+
+  .modal-content {
+    border-radius: 16px;
+  }
+
+  body.dark-mode .modal-content {
+    background:#020617;
+    color:#e5e7eb;
+    border:1px solid #1f2937;
+  }
+
+  body.dark-mode .modal-content .text-muted {
+    color:#9ca3af !important;
+  }
 </style>
 
 <div class="products-section">
@@ -208,52 +219,14 @@
 
           <div class="product-card">
 
-            {% comment %} Check if product has multiple images {% endcomment %}
-            {% if prod.p_image2 or prod.p_image3 or prod.p_image4 %}
-              {%comment%} Multiple images - show carousel {%endcomment%}
-              <div id="prodCarousel{{ prod.id }}" class="carousel slide" data-bs-ride="false">
-                <div class="carousel-inner">
-                  {% if prod.p_image %}
-                    <div class="carousel-item active">
-                      <img src="{{ prod.p_image.url }}" loading="lazy" class="product-img">
-                    </div>
-                  {% endif %}
-                  {% if prod.p_image2 %}
-                    <div class="carousel-item {% if not prod.p_image %}active{% endif %}">
-                      <img src="{{ prod.p_image2.url }}" loading="lazy" class="product-img">
-                    </div>
-                  {% endif %}
-                  {% if prod.p_image3 %}
-                    <div class="carousel-item {% if not prod.p_image and not prod.p_image2 %}active{% endif %}">
-                      <img src="{{ prod.p_image3.url }}" loading="lazy" class="product-img">
-                    </div>
-                  {% endif %}
-                  {% if prod.p_image4 %}
-                    <div class="carousel-item {% if not prod.p_image and not prod.p_image2 and not prod.p_image3 %}active{% endif %}">
-                      <img src="{{ prod.p_image4.url }}" loading="lazy" class="product-img">
-                    </div>
-                  {% endif %}
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" style="filter: invert(1); width: 20px; height: 20px;"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" style="filter: invert(1); width: 20px; height: 20px;"></span>
-                </button>
-                <div class="carousel-indicators" style="bottom: 5px; margin: 0;">
-                  {% if prod.p_image %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="0" class="active" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
-                  {% if prod.p_image2 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
-                  {% if prod.p_image3 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image and prod.p_image2 %}2{% elif prod.p_image or prod.p_image2 %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
-                  {% if prod.p_image4 %}<button type="button" data-bs-target="#prodCarousel{{ prod.id }}" data-bs-slide-to="{% if prod.p_image and prod.p_image2 and prod.p_image3 %}3{% elif prod.p_image and prod.p_image2 or prod.p_image and prod.p_image3 or prod.p_image2 and prod.p_image3 %}2{% elif prod.p_image or prod.p_image2 or prod.p_image3 %}1{% else %}0{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; margin: 0 3px;"></button>{% endif %}
-                </div>
-              </div>
+            {% if prod.p_image %}
+              <img src="{{ prod.p_image.url }}"
+                   loading="lazy"
+                   class="product-img">
             {% else %}
-              {%comment%} Single image {%endcomment%}
-              {% if prod.p_image %}
-                <img src="{{ prod.p_image.url }}" loading="lazy" class="product-img">
-              {% else %}
-                <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg" loading="lazy" class="product-img">
-              {% endif %}
+              <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
+                   loading="lazy"
+                   class="product-img">
             {% endif %}
 
             <div class="p-3">
@@ -272,6 +245,13 @@
               <!-- BUTTONS -->
               <div class="d-grid gap-2 mt-3">
 
+                <!-- QUICK VIEW -->
+                <button class="btn btn-small btn-outline-dark"
+                        data-bs-toggle="modal"
+                        data-bs-target="#quickView{{ prod.id }}">
+                  Quick View
+                </button>
+
                 <a href="{% url 'detail_page' prod.id %}"
                    class="btn btn-small btn-view">
                   View Details
@@ -289,6 +269,37 @@
                     Buy Now
                   </a>
                 {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK VIEW MODAL -->
+        <div class="modal fade" id="quickView{{ prod.id }}" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content p-3">
+
+              {% if prod.p_image %}
+                <img src="{{ prod.p_image.url }}"
+                     class="quick-modal-img mb-3"
+                     loading="lazy">
+              {% endif %}
+
+              <h5 class="fw-bold">{{ prod.p_name }}</h5>
+              <p class="text-muted">{{ prod.p_description|truncatewords:20 }}</p>
+
+              <p class="fw-bold fs-5">₹{{ prod.p_price }}</p>
+
+              <div class="d-flex gap-2">
+                <a href="{% url 'detail_page' prod.id %}"
+                   class="btn btn-dark flex-fill">
+                  View Full
+                </a>
+                <a href="{% url 'add_to_cart' prod.id %}"
+                   class="btn btn-outline-dark flex-fill">
+                  Add to Cart
+                </a>
               </div>
 
             </div>
