@@ -431,18 +431,11 @@
       </div>
 
       <!-- RIGHT: gradient BUY NOW -->
-      {% if product.p_link %}
-        <a href="{{ product.p_link }}"
-           target="_blank"
-           class="btn-buy-gradient text-decoration-none text-center">
+      <a href="{% url 'dummy_checkout' %}"
+          target="_blank"
+          class="btn btn-small btn-outline-success btn-buy">
           Buy Now
-        </a>
-      {% else %}
-        <button class="btn-buy-gradient" type="button" disabled>
-          Buy Now
-        </button>
-      {% endif %}
-
+      </a>
     </div>
   </div>
 </div>
