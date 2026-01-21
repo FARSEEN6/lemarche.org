@@ -32,6 +32,7 @@
       background: rgba(248, 250, 252, 0.88) !important;
       border-bottom: 1px solid rgba(148, 163, 184, 0.45);
       transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      height: 50px;
     }
 
     .navbar .navbar-brand,
@@ -66,7 +67,7 @@
     .search-wrapper {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 999px;
-      padding: 4px 6px;
+      padding: 3px 6px;
       display: flex;
       align-items: center;
       box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
@@ -93,7 +94,7 @@
       border: none;
       background: transparent;
       border-radius: 999px;
-      padding: 4px 8px;
+      padding: 2px 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -139,8 +140,8 @@
     }
 
     #themeIcon {
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
       transition: transform 0.35s ease, filter 0.3s ease;
     }
 
@@ -310,10 +311,6 @@
         <ul class="navbar-nav align-items-center ms-lg-2 gap-1">
 
           {% if user.is_authenticated %}
-
-          <li class="nav-item">
-          <a class="nav-link" href="{% url 'cart' %}">🛒 Cart</a>
-        </li>
         
             <li class="nav-item d-flex align-items-center">
               <span class="nav-link nav-username d-flex align-items-center">
@@ -335,7 +332,9 @@
               </li>
             {% endif %}
 
-           
+           <li class="nav-item">
+              <a class="nav-link" href="{% url 'cart' %}">🛒 </a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
