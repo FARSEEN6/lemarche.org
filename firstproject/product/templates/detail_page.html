@@ -1,473 +1,222 @@
 {% extends "index.html" %}
-
 {% block title %}{{ product.p_name }} – Le Marche{% endblock %}
-
 {% block content %}
 
 <style>
-  /* WRAPPER: give bottom padding so content is not hidden behind sticky bar */
-  .product-page-wrapper {
-    padding-bottom: 110px;
-  }
+/* ---------- GENERAL ---------- */
+.product-page-wrapper {
+  padding-bottom: 120px;
+}
 
-  /* IMAGE CARD */
-  .product-hero-card {
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-  }
+/* ---------- IMAGE ---------- */
+.product-image {
+  max-height: 430px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.12);
+}
 
-  .product-image-wrapper {
-    border-radius: 18px;
-    overflow: hidden;
-    cursor: zoom-in;
-  }
+/* ---------- BADGES ---------- */
+.pill-label {
+  font-size: .75rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-weight: 600;
+}
 
-  .product-image-wrapper img {
-    transition: transform 0.3s ease;
-  }
+.stock-badge {
+  font-size: .8rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.stock-in { background:#dcfce7; color:#166534; }
+.stock-out { background:#fee2e2; color:#b91c1c; }
 
-  .product-image-wrapper:hover img {
-    transform: scale(1.05);
-  }
+/* ---------- STARS ---------- */
+.star { color:#fbbf24; font-size:1.1rem; }
+.star-muted { color:#d1d5db; }
 
-  /* CATEGORY BADGE – Apple-style */
-  .pill-label {
-    font-size: 0.75rem;
-    padding: 6px 14px;
-    border-radius: 30px;
-    background: #f3f4f6;
-    color: #111827;
-    display: inline-block;
-    font-weight: 600;
-  }
+/* ---------- STICKY BAR ---------- */
+.sticky-action-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1050;
+  backdrop-filter: blur(16px);
+  background: rgba(248,250,252,.95);
+  border-top: 1px solid rgba(148,163,184,.5);
+}
 
-  body.dark-mode .pill-label {
-    background: #1f2937;
-    color: #e5e7eb;
-  }
+.sticky-inner {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+  padding:.6rem 0;
+}
 
-  /* STOCK BADGES */
-  .stock-badge {
-    font-size: 0.8rem;
-    border-radius: 999px;
-    padding: 4px 10px;
-    font-weight: 600;
-  }
-  .stock-in {
-    background: #dcfce7;
-    color: #166534;
-  }
-  .stock-out {
-    background: #fee2e2;
-    color: #b91c1c;
-  }
+.qty-wrapper {
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  padding:2px 6px;
+}
+.qty-btn {
+  border:none;
+  background:transparent;
+  width:28px;
+  height:28px;
+  font-weight:bold;
+}
+.qty-input {
+  width:40px;
+  border:none;
+  text-align:center;
+  background:transparent;
+}
 
-  /* RATING */
-  .star-rating {
-    color: #fbbf24;
-    font-size: 1rem;
-  }
+.icon-circle-btn {
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+.icon-cart { background:linear-gradient(135deg,#0ea5e9,#6366f1); }
+.icon-delete { background:linear-gradient(135deg,#f97373,#ef4444); }
 
-  /* DELIVERY BOX – minimal */
-  .delivery-box {
-    border-radius: 14px;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
-  }
-  body.dark-mode .delivery-box {
-    background: #020617;
-    border-color: #1f2937;
-    color: #e5e7eb;
-  }
-
-  /* SIMILAR PRODUCTS */
-  .similar-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  .similar-card {
-    border-radius: 14px;
-    border: none;
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .similar-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
-  }
-
-  /* ---------- STICKY BOTTOM BAR (Amazon style) ---------- */
-
-  .sticky-action-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1050;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    background: rgba(248, 250, 252, 0.9);
-    border-top: 1px solid rgba(148, 163, 184, 0.5);
-  }
-
-  body.dark-mode .sticky-action-bar {
-    background: rgba(15, 23, 42, 0.92);
-    border-top-color: rgba(51, 65, 85, 0.9);
-  }
-
-  .sticky-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.6rem 0;
-  }
-
-  @media (max-width: 575.98px) {
-    .sticky-inner {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-
-  /* Quantity selector */
-  .qty-wrapper {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: #f9fafb;
-    padding: 2px 6px;
-  }
-
-  body.dark-mode .qty-wrapper {
-    background: #020617;
-    border-color: #4b5563;
-    color: #e5e7eb;
-  }
-
-  .qty-btn {
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .qty-input {
-    width: 40px;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-size: 0.9rem;
-  }
-
-  .qty-input:focus {
-    outline: none;
-  }
-
-  /* ICON-ONLY ROUND BUTTONS */
-  .icon-circle-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
-  }
-
-  /* Cart icon button – gradient premium */
-  .icon-cart {
-    background: linear-gradient(135deg, #0ea5e9, #6366f1);
-    color: #ffffff;
-  }
-  .icon-cart:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.5);
-  }
-
-  /* Delete icon button – gradient red */
-  .icon-delete {
-    background: linear-gradient(135deg, #f97373, #ef4444);
-    color: #ffffff;
-  }
-  .icon-delete:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(248, 113, 113, 0.6);
-  }
-
-  /* Gradient BUY NOW button */
-  .btn-buy-gradient {
-    border-radius: 999px;
-    border: none;
-    padding: 9px 24px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #f9fafb;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.5);
-    white-space: nowrap;
-  }
-
-  .btn-buy-gradient:hover {
-    background: linear-gradient(135deg, #16a34a, #15803d);
-    transform: translateY(-1px);
-  }
-
-  /* Apple-style info text */
-  .apple-subtle {
-    font-size: 0.8rem;
-    color: #6b7280;
-  }
-
-  body.dark-mode .apple-subtle {
-    color: #9ca3af;
-  }
+.btn-buy-gradient {
+  background:linear-gradient(135deg,#2f3d34,#202221);
+  color:#fff;
+  border:1px solid black;
+}
 </style>
 
 <div class="container product-page-wrapper py-5">
 
-  <!-- Back link -->
-  <a href="{% url 'product' %}" class="text-decoration-none apple-subtle">
+  <a href="{% url 'product' %}" class="text-muted text-decoration-none">
     ← Back to products
   </a>
 
   <div class="row g-4 mt-3">
 
-    <!-- IMAGE SIDE -->
+    <!-- IMAGE -->
     <div class="col-md-5">
-      <div class="product-hero-card bg-white">
-        <div class="product-image-wrapper"
-             {% if product.p_image %}data-bs-toggle="modal" data-bs-target="#imageModal"{% endif %}>
-          {% if product.p_image %}
-            <img src="{{ product.p_image.url }}" class="w-100"
-                 style="max-height:430px; object-fit:cover;" alt="{{ product.p_name }}">
-          {% else %}
-            <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
-                 class="w-100"
-                 style="max-height:430px; object-fit:cover;" alt="No image">
-          {% endif %}
-        </div>
-        {% if product.p_image %}
-          <p class="text-center apple-subtle mt-2">Click image to zoom</p>
-        {% endif %}
-      </div>
+      {% if product.p_image %}
+        <img src="{{ product.p_image.url }}" class="w-100 product-image">
+      {% else %}
+        <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
+             class="w-100 product-image">
+      {% endif %}
     </div>
 
-    <!-- DETAILS SIDE -->
+    <!-- DETAILS -->
     <div class="col-md-7">
 
-      <!-- Category + stock line -->
-      <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-        <span class="pill-label">{{ product.p_category|default:"Product" }}</span>
+      <div class="d-flex gap-2 mb-2">
+        <span class="pill-label">{{ product.p_category }}</span>
 
-        {% if in_stock %}
+        {% if product.in_stock %}
           <span class="stock-badge stock-in">In stock</span>
         {% else %}
           <span class="stock-badge stock-out">Out of stock</span>
         {% endif %}
       </div>
 
-      <!-- Title -->
-      <h2 class="fw-bold mb-2">{{ product.p_name }}</h2>
+      <h2 class="fw-bold">{{ product.p_name }}</h2>
 
-      <!-- Rating -->
-      {% with rating_value=rating|default:4.5 %}
-      <div class="d-flex align-items-center mb-2">
-        <div class="star-rating">
+      <!-- ⭐ REALISTIC STAR RATING -->
+      <div class="mb-2">
+        {% with full=product.rating|floatformat:0 %}
           {% for i in "12345" %}
-            {% if forloop.counter <= rating_value|floatformat:0 %}
-              ★
+            {% if forloop.counter <= full %}
+              <span class="star">★</span>
             {% else %}
-              ☆
+              <span class="star star-muted">★</span>
             {% endif %}
           {% endfor %}
-        </div>
-        <span class="small text-muted ms-2">{{ rating_value }}/5</span>
+        {% endwith %}
+        <span class="small text-muted ms-2">
+          {{ product.rating }}/5 ({{ product.rating_count }} ratings)
+        </span>
       </div>
-      {% endwith %}
 
-      <!-- Price -->
-      <h3 class="text-success fw-semibold mb-3">
-        ₹{{ product.p_price }}
-      </h3>
+      <h3 class="text-danger fw-semibold mb-3">₹{{ product.p_price }}</h3>
 
-      <!-- Description -->
-      <p class="text-muted mb-4" style="line-height: 1.7;">
+      <p class="text-muted" style="line-height:1.7">
         {{ product.p_description|linebreaks }}
       </p>
 
-      <!-- DELIVERY INFO -->
-      <div class="delivery-box p-3 mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap">
-          <div>
-            <strong>Estimated delivery:</strong>
-            <div class="small text-muted">
-              3–5 business days within Kerala
-            </div>
-          </div>
-          <div class="text-end small mt-2 mt-md-0">
-            🚚 Free delivery on orders above ₹999
-          </div>
+      <div class="mt-4 p-3 border rounded">
+        <strong>Estimated delivery</strong>
+        <div class="small text-muted">
+          3–5 business days • Free delivery above ₹999
         </div>
       </div>
 
-      <p class="apple-subtle mt-2">Product ID: {{ product.id }}</p>
+      <p class="small text-muted mt-2">Product ID: {{ product.id }}</p>
 
-    </div>
-
-  </div>
-
-  <!-- SIMILAR PRODUCTS SECTION -->
-  {% if similar_products %}
-    <hr class="my-5">
-    <h3 class="similar-title mb-3">Similar products you may like</h3>
-
-    <div class="row g-4">
-      {% for item in similar_products %}
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card similar-card h-100">
-            {% if item.p_image %}
-              <img src="{{ item.p_image.url }}"
-                   class="card-img-top"
-                   style="height:170px; object-fit:cover;"
-                   alt="{{ item.p_name }}">
-            {% else %}
-              <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
-                   class="card-img-top"
-                   style="height:170px; object-fit:cover;"
-                   alt="No image">
-            {% endif %}
-
-            <div class="card-body d-flex flex-column">
-              <h6 class="mb-1">{{ item.p_name|truncatechars:35 }}</h6>
-              <small class="text-muted">{{ item.p_category }}</small>
-              <p class="fw-semibold mt-2 mb-3">₹{{ item.p_price }}</p>
-
-              <a href="{% url 'detail_product' item.id %}"
-                 class="btn btn-sm btn-outline-dark mt-auto">
-                View
-              </a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-</div>
-
-{% if product.p_image %}
-<!-- IMAGE ZOOM MODAL -->
-<div class="modal fade" id="imageModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-transparent border-0">
-      <button class="btn-close ms-auto me-3 mt-3" data-bs-dismiss="modal"></button>
-      <img src="{{ product.p_image.url }}"
-           class="img-fluid rounded shadow"
-           alt="{{ product.p_name }}">
     </div>
   </div>
 </div>
-{% endif %}
 
-<!-- 🔻 STICKY BOTTOM BAR -->
+<!-- 🔻 STICKY ACTION BAR -->
 <div class="sticky-action-bar">
   <div class="container">
     <div class="sticky-inner">
 
-      <!-- LEFT: quantity + small text -->
-      <div class="d-flex align-items-center gap-3">
-        <div class="qty-wrapper">
-          <button class="qty-btn" type="button" id="qtyMinus">−</button>
-          <input type="text" id="qtyInput" class="qty-input" value="1" inputmode="numeric">
-          <button class="qty-btn" type="button" id="qtyPlus">+</button>
-        </div>
-        <span class="apple-subtle d-none d-sm-inline">
-          Adjust quantity before adding to cart
-        </span>
+      <!-- Quantity -->
+      <div class="qty-wrapper">
+        <button class="qty-btn" id="qtyMinus">−</button>
+        <input type="text" id="qtyInput" class="qty-input" value="1">
+        <button class="qty-btn" id="qtyPlus">+</button>
       </div>
 
-      <!-- MIDDLE: icon-only buttons -->
-      <div class="d-flex align-items-center gap-2">
+      <!-- ADMIN CONTROLS -->
+      {% if user.is_staff %}
+      <div class="d-flex gap-2">
+        <a href="{% url 'edit_products' product.id %}" class="icon-circle-btn icon-cart">Edit</a>
 
-        <!-- Cart icon-only round button -->
-        <a href="{% url 'add_to_cart' product.id %}"
-           class="icon-circle-btn icon-cart"
-           title="Add to cart"
-           aria-label="Add to cart">
-          🛒
-        </a>
-         <a href="{% url 'edit_products' product.id %}"
-           class="icon-circle-btn icon-cart"
-           title="Add to cart"
-           aria-label="Add to cart">
-          Edit
-        </a>
+        <form method="post" action="{% url 'toggle_stock' product.id %}">
+          {% csrf_token %}
+          {% if product.in_stock %}
+            <button class="icon-circle-btn icon-delete" title="Set Out of Stock">Out</button>
+          {% else %}
+            <button class="icon-circle-btn icon-cart" title="Set In Stock">In</button>
+          {% endif %}
+        </form>
 
-        {% if user.is_staff %}
-        <!-- Delete icon-only round button (only staff) -->
-        <a href="{% url 'delete_product' product.id %}"
-           class="icon-circle-btn icon-delete"
-           title="Delete product"
-           aria-label="Delete product">
-          🗑
-        </a>
+        <a href="{% url 'delete_product' product.id %}" class="icon-circle-btn icon-delete">🗑</a>
+      </div>
+      {% endif %}
+
+      <!-- BUY -->
+      <div>
+        {% if product.in_stock %}
+          <a href="{% url 'add_to_cart' product.id %}" class="btn btn-buy-gradient">Cart 🛒</a>
+          <a href="{% url 'dummy_checkout' %}" target="_blank"
+             class="btn btn-buy-gradient">Buy Now</a>
+        {% else %}
+          <button class="btn btn-secondary" disabled>Out of Stock</button>
         {% endif %}
       </div>
 
-      <!-- RIGHT: gradient BUY NOW -->
-      <a href="{% url 'dummy_checkout' %}"
-          target="_blank"
-          class="btn btn-small btn-outline-success btn-buy">
-          Buy Now
-      </a>
     </div>
   </div>
 </div>
 
-<!-- Quantity selector JS (UI only) -->
 <script>
-  (function () {
-    const minusBtn = document.getElementById("qtyMinus");
-    const plusBtn = document.getElementById("qtyPlus");
-    const qtyInput = document.getElementById("qtyInput");
+const minus = document.getElementById("qtyMinus");
+const plus = document.getElementById("qtyPlus");
+const input = document.getElementById("qtyInput");
 
-    function clampQty(val) {
-      let num = parseInt(val, 10);
-      if (isNaN(num) || num < 1) num = 1;
-      if (num > 99) num = 99;
-      return num;
-    }
-
-    if (minusBtn && plusBtn && qtyInput) {
-      minusBtn.addEventListener("click", function () {
-        qtyInput.value = clampQty(qtyInput.value - 1);
-      });
-
-      plusBtn.addEventListener("click", function () {
-        qtyInput.value = clampQty(qtyInput.value + 1);
-      });
-
-      qtyInput.addEventListener("input", function () {
-        qtyInput.value = clampQty(qtyInput.value);
-      });
-    }
-  })();
+minus.onclick = () => input.value = Math.max(1, input.value - 1);
+plus.onclick = () => input.value = Math.min(99, +input.value + 1);
 </script>
 
 {% endblock %}

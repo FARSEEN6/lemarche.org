@@ -90,6 +90,10 @@
     font-weight: 600;
   }
 
+  .products-section a {
+  text-decoration: none !important;
+  color: inherit;
+}
   .product-meta {
     font-size: 0.8rem;
   }
@@ -206,6 +210,7 @@
              data-aos="fade-up"
              data-aos-delay="{{ forloop.counter0|add:'1' }}00">
 
+          <a href="{% url 'detail_page' prod.id %}">
           <div class="product-card">
 
             {% comment %} Check if product has multiple images {% endcomment %}
@@ -269,28 +274,10 @@
               <!-- PRICE (fade in on hover) -->
               <p class="price-text mb-1">₹{{ prod.p_price }}</p>
 
-              <!-- BUTTONS -->
-              <div class="d-grid gap-2 mt-3">
-
-                <a href="{% url 'detail_page' prod.id %}"
-                   class="btn btn-small btn-view">
-                  View Details
-                </a>
-
-                <a href="{% url 'add_to_cart' prod.id %}"
-                   class="btn btn-small btn-outline-secondary btn-cart">
-                  Add to Cart
-                </a>
-
-                  <a href="{% url 'dummy_checkout' %}"
-                     target="_blank"
-                     class="btn btn-small btn-outline-success btn-buy">
-                    Buy Now
-                  </a>
-              </div>
 
             </div>
           </div>
+          </a>
         </div>
       {% endfor %}
     </div>

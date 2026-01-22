@@ -1,12 +1,40 @@
 {% extends "index.html" %}
 
+{% block title %}Payment Successful – Le Marche{% endblock %}
+
 {% block content %}
 <div class="container text-center mt-5">
-    <h2 class="text-success">Payment Successful 🎉</h2>
-    <p>Your order has been placed successfully.</p>
 
-    <a href="{% url 'home' %}" class="btn btn-dark mt-3">
-        Back to Home
-    </a>
+    <!-- Success Icon -->
+    <div class="mb-4">
+        <span style="font-size:60px;">✅</span>
+    </div>
+
+    <h2 class="text-success">Payment Successful 🎉</h2>
+    <p class="mt-2">
+        Thank you for shopping with <strong>Le Marche</strong>.
+    </p>
+
+    <p class="text-muted">
+        Your payment has been received and your order is being processed.
+    </p>
+
+    <hr class="my-4">
+
+    <!-- Optional info -->
+    <p class="small text-muted">
+        If you have any issues, please contact our support team.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'home' %}" class="btn btn-dark">
+            Back to Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="btn btn-outline-dark">
+            View Cart
+        </a>
+    </div>
+
 </div>
 {% endblock %}

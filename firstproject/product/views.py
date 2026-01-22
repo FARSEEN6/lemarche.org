@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 
-from django.contrib.admin.views.decorators import staff_member_required  # ⬅ NEW
-from django.contrib.auth.decorators import login_required               # ⬅ optional but useful
-
-from .form import productForm
 from .models import Product
+from .form import productForm
 
 
 def Home(request):
@@ -20,7 +18,6 @@ def product(request):
 
     products = Product.objects.all()
 
-    # 🔍 search
     if q:
         products = products.filter(
             Q(p_name__icontains=q) |
@@ -28,11 +25,9 @@ def product(request):
             Q(p_description__icontains=q)
         )
 
-    # 📂 category filter from navbar dropdown
     if category:
         products = products.filter(p_category__iexact=category)
 
-    # 🔢 optional: sort
     if sort == 'price_asc':
         products = products.order_by('p_price')
     elif sort == 'price_desc':
@@ -51,22 +46,30 @@ def product(request):
 
 def detail_product(request, id):
     product_obj = get_object_or_404(Product, id=id)
-    return render(request, 'detail_page.html', {'product': product_obj})
+    return render(request, 'detail_page.html', {
+        'product': product_obj,
+        'in_stock': product_obj.in_stock
+    })
 
 
-# ❌ DELETE PRODUCT – ADMIN/STAF ONLY
+# ✅ TOGGLE STOCK (ADMIN ONLY)
+@staff_member_required
+def toggle_stock(request, id):
+    product = get_object_or_404(Product, id=id)
+    product.in_stock = not product.in_stock
+    product.save()
+    return redirect('detail_page', id=id)
+
+
 @staff_member_required
 def delete_product(request, id):
     product_obj = get_object_or_404(Product, id=id)
-
     if request.method == 'POST':
         product_obj.delete()
         return redirect('product')
-
     return render(request, 'delete_product.html', {'product': product_obj})
 
 
-# ➕ ADD PRODUCT – ADMIN/STAF ONLY
 @staff_member_required
 def add_products(request):
     if request.method == 'POST':
@@ -79,7 +82,6 @@ def add_products(request):
     return render(request, 'add_product.html', {'form': form})
 
 
-# ✏ EDIT PRODUCT – ADMIN/STAF ONLY
 @staff_member_required
 def edit_products(request, id):
     product_obj = get_object_or_404(Product, id=id)

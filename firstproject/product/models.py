@@ -8,10 +8,11 @@ class Product(models.Model):
     p_link = models.URLField(blank=True, null=True)
     p_price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    # main image - Cloudinary
-    p_image = CloudinaryField('image', folder='products', blank=True, null=True)
+    # ✅ STOCK STATUS
+    in_stock = models.BooleanField(default=True)
 
-    # extra images - Cloudinary
+    # images
+    p_image = CloudinaryField('image', folder='products', blank=True, null=True)
     p_image2 = CloudinaryField('image', folder='products', blank=True, null=True)
     p_image3 = CloudinaryField('image', folder='products', blank=True, null=True)
     p_image4 = CloudinaryField('image', folder='products', blank=True, null=True)
