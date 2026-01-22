@@ -1,20 +1,21 @@
-# account/views.py
+import razorpay
+import json
+
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.contrib.admin.views.decorators import staff_member_required  # ⬅ NEW
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Cart
 from product.models import Product
-from product.form import productForm  # ⬅ adjust to product.forms if needed
 
 
-# 🔐 LOGIN VIEW
+# 🔐 LOGIN
 def login_view(request):
-    # already logged in user → go to profile
     if request.user.is_authenticated:
         return redirect("home")
 
@@ -23,81 +24,69 @@ def login_view(request):
         password = request.POST.get("password", "").strip()
 
         user = authenticate(request, username=username, password=password)
-
-        if user is not None:
+        if user:
             login(request, user)
-            messages.success(request, "Login successful.")
-            return redirect("home")  # make sure URL name is 'profile'
+            messages.success(request, "Login successful")
+            return redirect("home")
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "Invalid credentials")
 
     return render(request, "login.html")
 
 
-# 📝 REGISTER VIEW
+# 📝 REGISTER
 def register_view(request):
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
         password = request.POST.get("password", "").strip()
 
         if not username or not password:
-            messages.error(request, "Username and password are required.")
-            return render(request, "register.html")
-
-        if len(password) < 4:
-            messages.error(request, "Password must be at least 4 characters long.")
+            messages.error(request, "All fields required")
             return render(request, "register.html")
 
         try:
             User.objects.create_user(username=username, password=password)
-            messages.success(request, "Registration successful. You can now log in.")
+            messages.success(request, "Registration successful")
             return redirect("login")
         except IntegrityError:
-            messages.error(request, "Username already exists.")
-            return render(request, "register.html")
+            messages.error(request, "Username already exists")
 
     return render(request, "register.html")
 
 
-# 👤 PROFILE VIEW
+# 🚪 LOGOUT
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
+
+# 👤 PROFILE
 @login_required
 def profile_view(request):
     return render(request, "profile.html")
 
 
-# 🚪 LOGOUT VIEW
-def logout_view(request):
-    logout(request)
-    messages.info(request, "You have been logged out.")
-    return redirect("login")
-
-
-# 🛒 CART VIEWS
+# 🛒 CART
 @login_required
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user).select_related("product")
-    total = sum(item.line_total for item in cart_items)  # assumes Cart has line_total property
+    total = sum(item.line_total for item in cart_items)
 
     return render(request, "cart.html", {
         "cart_items": cart_items,
-        "total": total,
+        "total": total
     })
 
 
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-
-    cart_item, created = Cart.objects.get_or_create(
-        user=request.user,
-        product=product,
-    )
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
 
     if not created:
         cart_item.quantity += 1
         cart_item.save()
 
-    messages.success(request, "Item added to cart.")
     return redirect("cart")
 
 
@@ -106,18 +95,9 @@ def update_cart(request, item_id):
     cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
 
     if request.method == "POST":
-        qty = request.POST.get("quantity", "1")
-        try:
-            qty = int(qty)
-        except (TypeError, ValueError):
-            qty = 1
-
-        if qty < 1:
-            qty = 1
-
-        cart_item.quantity = qty
+        qty = int(request.POST.get("quantity", 1))
+        cart_item.quantity = max(qty, 1)
         cart_item.save()
-        messages.success(request, "Cart updated.")
 
     return redirect("cart")
 
@@ -125,85 +105,52 @@ def update_cart(request, item_id):
 @login_required
 def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
-
-    if request.method == "POST":
-        cart_item.delete()
-        messages.success(request, "Item removed from cart.")
-
+    cart_item.delete()
     return redirect("cart")
 
 
-# 💳 DUMMY CHECKOUT
+# 💳 REAL RAZORPAY CHECKOUT (PAGE NAME UNCHANGED)
 @login_required
 def dummy_checkout(request):
-    if request.method == 'POST':
-        payment_method = request.POST.get('payment_method')
+    cart_items = Cart.objects.filter(user=request.user)
+    total = sum(item.line_total for item in cart_items)
 
-        if payment_method == 'upi':
-            upi_id = request.POST.get('upi_id')
-            txn_id = request.POST.get('upi_txn_id')
-            # handle UPI details here if needed
+    if total == 0:
+        messages.error(request, "Cart is empty")
+        return redirect("cart")
 
-        elif payment_method == 'card':
-            card_number = request.POST.get('card_number')
-            name_on_card = request.POST.get('name_on_card')
-            # handle card details here if needed
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
 
-        return redirect('dummy_payment_success')
+    order = client.order.create({
+        "amount": int(total * 100),  # paise
+        "currency": "INR",
+        "payment_capture": 1
+    })
 
-    return render(request, "dummy_checkout.html")
+    context = {
+        "total": total,
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "razorpay_order_id": order["id"],
+        "razorpay_amount": int(total * 100)
+    }
+
+    return render(request, "dummy_checkout.html", context)
+
+
+# ✅ PAYMENT SUCCESS HANDLER
+@csrf_exempt
+def razorpay_success(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        # OPTIONAL: signature verification here
+
+        Cart.objects.filter(user=request.user).delete()
+        return redirect("dummy_payment_success")
 
 
 @login_required
 def dummy_payment_success(request):
     return render(request, "dummy_success.html")
-
-
-# # 🧑‍💻 ADD PRODUCTS (ADMIN / STAFF ONLY)
-# @staff_member_required
-# def add_products(request):
-#     if request.method == 'POST':
-#         form = productForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Product added successfully!")
-#             return redirect('product')
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#     else:
-#         form = productForm()
-
-#     return render(request, 'add_product.html', {'form': form})
-
-
-
-@login_required
-def update_cart(request, item_id):
-    cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
-
-    if request.method == "POST":
-        qty = request.POST.get("quantity", "1")
-        try:
-            qty = int(qty)
-        except (TypeError, ValueError):
-            qty = 1
-
-        if qty < 1:
-            qty = 1
-
-        cart_item.quantity = qty
-        cart_item.save()
-        messages.success(request, "Cart updated.")
-
-    return redirect("cart")
-
-
-@login_required
-def remove_from_cart(request, item_id):
-    cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
-
-    if request.method == "POST":
-        cart_item.delete()
-        messages.success(request, "Item removed from cart.")
-
-    return redirect("cart")

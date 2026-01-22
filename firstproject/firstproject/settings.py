@@ -28,6 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-(-ehkytohn4q29k59h8=_ncqb)o(^_rkax!9!sjy#@^6*=ss-+')
 
+# settings.py
+
+RAZORPAY_KEY_ID="rzp_test_S479OjLDHxx5wH"
+RAZORPAY_KEY_SECRET="Y6iC3HAclGLT4qUHgXtme5Bz"
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
