@@ -664,10 +664,12 @@
       </div>
     </form>
     
-    <!-- Cart Button -->
-    <a href="{% url 'cart' %}" class="mobile-cart-btn" aria-label="Cart">
-      🛒
-    </a>
+    <!-- Cart Button (only show if user is authenticated) -->
+    {% if user.is_authenticated %}
+      <a href="{% url 'cart' %}" class="mobile-cart-btn" aria-label="Cart">
+        🛒
+      </a>
+    {% endif %}
   </div>
   
   <!-- Third Nav: Products, Categories, Add Products, Logout (Always visible at bottom) -->
@@ -698,6 +700,13 @@
         {% endif %}
       </ul>
     </div>
+    
+    <!-- Cart button ONLY if user is authenticated -->
+    {% if user.is_authenticated %}
+      <a href="{% url 'cart' %}" class="mobile-nav-item">
+        <span>Cart</span>
+      </a>
+    {% endif %}
     
     <!-- Add Products (for admin) -->
     {% if user.is_authenticated and user.is_staff %}

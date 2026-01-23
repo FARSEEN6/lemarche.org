@@ -95,6 +95,24 @@
   color:#fff;
   border:1px solid black;
 }
+@media screen  and (max-width: 786px) {
+ .adb1{
+    position: absolute;
+    bottom:180px;
+    right: 10px;
+  }
+  .adb2{
+    position: absolute;
+    bottom:130px;
+    right: 10px;
+  }
+  .adb3{
+    position: absolute;
+    bottom:80px;
+    right: 10px;
+  }
+  
+}
 </style>
 
 <div class="container product-page-wrapper py-5">
@@ -167,9 +185,14 @@
 
 <!-- 🔻 STICKY ACTION BAR -->
 <div class="sticky-action-bar">
+  {% if not user.is_authenticated %}
+  <div style=" justify-content: center; text-align: center; margin-top: 5px;">
+  <a href="{% url 'login' %}" class="btn btn-danger">Login to Buy</a>
+  </div>
+  {% endif %}
   <div class="container">
     <div class="sticky-inner">
-
+{% if user.is_authenticated %}
       <!-- Quantity -->
       <div class="qty-wrapper">
         <button class="qty-btn" id="qtyMinus">−</button>
@@ -180,18 +203,18 @@
       <!-- ADMIN CONTROLS -->
       {% if user.is_staff %}
       <div class="d-flex gap-2">
-        <a href="{% url 'edit_products' product.id %}" class="icon-circle-btn icon-cart">Edit</a>
+        <a href="{% url 'edit_products' product.id %}" class="icon-circle-btn icon-cart adb1">Edit</a>
 
         <form method="post" action="{% url 'toggle_stock' product.id %}">
           {% csrf_token %}
           {% if product.in_stock %}
-            <button class="icon-circle-btn icon-delete" title="Set Out of Stock">Out</button>
+            <button class="icon-circle-btn icon-delete adb2" title="Set Out of Stock">Out</button>
           {% else %}
-            <button class="icon-circle-btn icon-cart" title="Set In Stock">In</button>
+            <button class="icon-circle-btn icon-cart adb2" title="Set In Stock">In</button>
           {% endif %}
         </form>
 
-        <a href="{% url 'delete_product' product.id %}" class="icon-circle-btn icon-delete">🗑</a>
+        <a href="{% url 'delete_product' product.id %}" class="icon-circle-btn icon-delete adb3">🗑</a>
       </div>
       {% endif %}
 
@@ -206,9 +229,11 @@
         {% endif %}
       </div>
 
+  {% endif %}
     </div>
   </div>
 </div>
+
 
 <script>
 const minus = document.getElementById("qtyMinus");
