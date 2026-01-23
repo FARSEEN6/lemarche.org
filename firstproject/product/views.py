@@ -1,21 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Avg, Count
 
-from .models import Product
-from .form import productForm
+from .models import Product, ProductRating
+from .forms import productForm
 
 
 def Home(request):
-    products = Product.objects.filter(p_name__icontains="mac")
-    return render(request, 'home.html', {'products': products})
+    products = Product.objects.all()
+    return render(request, "home.html", {"products": products})
 
 
 def product(request):
-    q = request.GET.get('q', '').strip()
-    category = request.GET.get('category', '').strip()
-    sort = request.GET.get('sort', '').strip()
-
+    q = request.GET.get("q", "").strip()
     products = Product.objects.all()
 
     if q:
@@ -25,76 +23,74 @@ def product(request):
             Q(p_description__icontains=q)
         )
 
-    if category:
-        products = products.filter(p_category__iexact=category)
+    categories = Product.objects.values_list("p_category", flat=True).distinct()
 
-    if sort == 'price_asc':
-        products = products.order_by('p_price')
-    elif sort == 'price_desc':
-        products = products.order_by('-p_price')
-
-    categories = Product.objects.values_list('p_category', flat=True).distinct()
-
-    return render(request, 'product.html', {
-        'products': products,
-        'categories': categories,
-        'query': q,
-        'selected_category': category,
-        'sort': sort,
+    return render(request, "product.html", {
+        "products": products,
+        "categories": categories,
+        "query": q,
     })
 
 
 def detail_product(request, id):
     product_obj = get_object_or_404(Product, id=id)
-    return render(request, 'detail_page.html', {
-        'product': product_obj,
-        'in_stock': product_obj.in_stock
-    })
+    return render(request, "detail_page.html", {"product": product_obj})
 
 
-# ✅ TOGGLE STOCK (ADMIN ONLY)
-@staff_member_required
-def toggle_stock(request, id):
-    product = get_object_or_404(Product, id=id)
-    product.in_stock = not product.in_stock
+@login_required
+def rate_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    stars = int(request.POST.get("rating"))
+
+    ProductRating.objects.update_or_create(
+        product=product,
+        user=request.user,
+        defaults={"stars": stars}
+    )
+
+    stats = ProductRating.objects.filter(product=product).aggregate(
+        avg=Avg("stars"),
+        count=Count("id")
+    )
+
+    product.rating = round(stats["avg"] or 0, 1)
+    product.rating_count = stats["count"]
     product.save()
-    return redirect('detail_page', id=id)
 
-
-@staff_member_required
-def delete_product(request, id):
-    product_obj = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        product_obj.delete()
-        return redirect('product')
-    return render(request, 'delete_product.html', {'product': product_obj})
+    return redirect("detail_page", id=product_id)
 
 
 @staff_member_required
 def add_products(request):
-    if request.method == 'POST':
-        form = productForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('product')
-    else:
-        form = productForm()
-    return render(request, 'add_product.html', {'form': form})
+    form = productForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect("product")
+    return render(request, "add_product.html", {"form": form})
 
 
 @staff_member_required
 def edit_products(request, id):
     product_obj = get_object_or_404(Product, id=id)
+    form = productForm(request.POST or None, request.FILES or None, instance=product_obj)
+    if form.is_valid():
+        form.save()
+        return redirect("product")
+    return render(request, "edit_product.html", {"form": form})
 
-    if request.method == 'POST':
-        form = productForm(request.POST, request.FILES, instance=product_obj)
-        if form.is_valid():
-            form.save()
-            return redirect('product')
-    else:
-        form = productForm(instance=product_obj)
 
-    return render(request, 'edit_product.html', {
-        'form': form,
-        'product': product_obj
-    })
+@staff_member_required
+def delete_product(request, id):
+    product_obj = get_object_or_404(Product, id=id)
+    if request.method == "POST":
+        product_obj.delete()
+        return redirect("product")
+    return render(request, "delete_product.html", {"product": product_obj})
+
+
+@staff_member_required
+def toggle_stock(request, id):
+    product = get_object_or_404(Product, id=id)
+    product.in_stock = not product.in_stock
+    product.save()
+    return redirect("detail_page", id=id)
