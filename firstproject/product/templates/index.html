@@ -209,6 +209,13 @@
       font-size: 0.9rem;
     }
 
+    /* LOGO TRANSITION */
+    .logo-img {
+      width: 40px;
+      height: auto;
+      transition: opacity 0.3s ease;
+    }
+
     /* MOBILE-SPECIFIC STYLES */
     @media (max-width: 991.98px) {
       /* Hide desktop navbar on mobile */
@@ -419,6 +426,13 @@
       main {
         min-height: calc(100vh - 180px);
       }
+
+      /* Mobile logo */
+      .mobile-logo-img {
+        width: 40px;
+        height: auto;
+        transition: opacity 0.3s ease;
+      }
     }
 
     /* DESKTOP STYLES */
@@ -469,9 +483,17 @@
 <!-- DESKTOP NAVBAR (shown only on desktop) -->
 <nav class="navbar navbar-expand-lg shadow-sm sticky-top" id="mainNavbar">
   <div class="container">
-    <!-- BRAND -->
+    <!-- BRAND WITH LOGO THAT CHANGES WITH THEME -->
     <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
-      Le Marche
+      <!-- Light mode logo (shown by default) -->
+      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png" 
+           class="logo-img light-logo" 
+           alt="Le Marche Logo - Light Mode">
+      <!-- Dark mode logo (hidden by default) -->
+      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png" 
+           class="logo-img dark-logo" 
+           style="display: none;" 
+           alt="Le Marche Logo - Dark Mode">
     </a>
 
     <!-- TOGGLER (MOBILE) - Hidden by CSS on mobile -->
@@ -583,9 +605,17 @@
 <div class="mobile-nav-container d-lg-none">
   <!-- First Nav: Brand + User + Theme (Hides on scroll) -->
   <div class="top-nav-mobile">
-    <!-- Brand -->
+    <!-- Brand with logo that changes with theme -->
     <a class="navbar-brand fw-semibold" href="{% url 'home' %}" style="color: inherit;">
-      Le Marche
+      <!-- Light mode logo (shown by default) -->
+      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png" 
+           class="mobile-logo-img mobile-light-logo" 
+           alt="Le Marche Logo - Light Mode">
+      <!-- Dark mode logo (hidden by default) -->
+      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png" 
+           class="mobile-logo-img mobile-dark-logo" 
+           style="display: none;" 
+           alt="Le Marche Logo - Dark Mode">
     </a>
     
     <!-- User Info + Theme Toggle -->
@@ -701,7 +731,7 @@
     <div class="row g-3 align-items-start">
       <!-- FOOTER LOGO -->
       <div class="col-12 d-flex align-items-center mb-3">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFbL4rcWiXJ4idnrzuxwyN_lyOwzmChrSoRQ&usqp=CAU"
+        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png"
              alt="Le Marche Logo"
              class="footer-logo-img">
       </div>
@@ -754,17 +784,39 @@
   const sunIcon = "https://cdn-icons-png.flaticon.com/128/869/869869.png";
   const moonIcon = "https://cdn-icons-png.flaticon.com/128/581/581601.png";
 
+  // Logo URLs
+  const lightLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png";
+  const darkLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png";
+
+  // Get logos
+  const lightLogoDesktop = document.querySelector('.light-logo');
+  const darkLogoDesktop = document.querySelector('.dark-logo');
+  const lightLogoMobile = document.querySelector('.mobile-light-logo');
+  const darkLogoMobile = document.querySelector('.mobile-dark-logo');
+
   const savedTheme = localStorage.getItem("theme");
 
-  // Initialize theme
+  // Initialize theme and logos
   function initTheme() {
     if (savedTheme === "dark") {
       body.classList.add("dark-mode");
       if (themeIcon) themeIcon.src = sunIcon;
       if (themeIconMobile) themeIconMobile.src = sunIcon;
+      
+      // Show dark logos, hide light logos
+      if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
+      if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
+      if (lightLogoMobile) lightLogoMobile.style.display = "none";
+      if (darkLogoMobile) darkLogoMobile.style.display = "block";
     } else {
       if (themeIcon) themeIcon.src = moonIcon;
       if (themeIconMobile) themeIconMobile.src = moonIcon;
+      
+      // Show light logos, hide dark logos
+      if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
+      if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
+      if (lightLogoMobile) lightLogoMobile.style.display = "block";
+      if (darkLogoMobile) darkLogoMobile.style.display = "none";
     }
   }
 
@@ -787,10 +839,22 @@
       if (themeIcon) themeIcon.src = sunIcon;
       if (themeIconMobile) themeIconMobile.src = sunIcon;
       localStorage.setItem("theme", "dark");
+      
+      // Switch to dark logos
+      if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
+      if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
+      if (lightLogoMobile) lightLogoMobile.style.display = "none";
+      if (darkLogoMobile) darkLogoMobile.style.display = "block";
     } else {
       if (themeIcon) themeIcon.src = moonIcon;
       if (themeIconMobile) themeIconMobile.src = moonIcon;
       localStorage.setItem("theme", "light");
+      
+      // Switch to light logos
+      if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
+      if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
+      if (lightLogoMobile) lightLogoMobile.style.display = "block";
+      if (darkLogoMobile) darkLogoMobile.style.display = "none";
     }
   }
 
