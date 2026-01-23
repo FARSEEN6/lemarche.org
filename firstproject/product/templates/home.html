@@ -363,10 +363,12 @@ body.dark-mode .testimonial-strip {
                    class="btn btn-dark btn-view-small flex-grow-1">
                   View →
                 </a>
+                {% if user.is_authenticated %}
                 <a href="{% url 'add_to_cart' prod.id %}"
                    class="btn btn-outline-secondary btn-view-small">
                   🛒
                 </a>
+                {% endif %}
               </div>
             </div>
 
