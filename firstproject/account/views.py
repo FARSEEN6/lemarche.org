@@ -110,6 +110,24 @@ def remove_from_cart(request, item_id):
     return redirect("cart")
 
 
+@login_required
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    # Add to cart (or get existing)
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    
+    # If not created, increment? Optional. For "Buy Now" usually we just ensure it's in cart.
+    # Let's say we ensure at least 1 is in cart.
+    if not created:
+         # Optionally update quantity or just leave it. 
+         # For a direct "Buy Now", let's leave it as is, or maybe ensure session knows this is immediate buy? 
+         # For simplicity: Just ensure it's in cart and go to checkout.
+         pass
+    
+    return redirect("checkout_address")
+
+
+
 # 💳 REAL RAZORPAY CHECKOUT (PAGE NAME UNCHANGED)
 @login_required
 def dummy_checkout(request):

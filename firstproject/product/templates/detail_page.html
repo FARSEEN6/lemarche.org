@@ -164,7 +164,7 @@
     <div class="col-md-5">
       {% if product.p_image or product.p_image2 %}
       <div id="productCarousel" class="carousel slide product-image" data-bs-ride="false"
-        style="padding:0; overflow:hidden;">
+        style="padding:15px; overflow:hidden;">
 
         <!-- Indicators -->
         {% if product.p_image and product.p_image2 %}
@@ -320,7 +320,7 @@
           <button type="submit" class="btn btn-buy-gradient">Cart 🛒</button>
         </form>
 
-        <a href="{% url 'checkout_address' %}" class="btn btn-buy-gradient">
+        <a href="{% url 'buy_now' product.id %}" class="btn btn-buy-gradient">
           Buy Now
         </a>
         {% else %}
