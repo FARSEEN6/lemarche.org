@@ -19,4 +19,16 @@ urlpatterns = [
     path("checkout/dummy/", views.dummy_checkout, name="dummy_checkout"),
     path("razorpay/success/", views.razorpay_success, name="razorpay_success"),
     path("payment/success/", views.dummy_payment_success, name="dummy_payment_success"),
+
+    # WISHLIST
+    path("wishlist/", views.wishlist_view, name="wishlist"),
+    path("wishlist/toggle/<int:product_id>/", views.toggle_wishlist, name="toggle_wishlist"),
+
+    # CHECKOUT FLOW
+    path("checkout/address/", views.checkout_address, name="checkout_address"),
+    path("checkout/payment/", views.checkout_payment, name="checkout_payment"),
+    path("gpay/scan/", views.gpay_scan, name="gpay_scan"),
+
+    # ADMIN
+    path("dashboard/", views.admin_dashboard, name="admin_dashboard"),
 ]

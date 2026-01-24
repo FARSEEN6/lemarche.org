@@ -8,7 +8,8 @@ from .forms import productForm
 
 
 def Home(request):
-    products = Product.objects.all()
+    # Show last 4 added products (Latest Arrivals)
+    products = Product.objects.all().order_by('-id')[:4]
     return render(request, "home.html", {"products": products})
 
 

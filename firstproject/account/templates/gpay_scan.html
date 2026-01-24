@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block title %}Google Pay - Scan to Pay{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 text-center">
+            <div class="card shadow rounded-4 p-5">
+                <h3 class="mb-3 fw-bold">Scan to Pay</h3>
+                <p class="text-muted">Open Google Pay and scan the QR code below</p>
+
+                <div class="my-4">
+                    <!-- Dummy QR Code -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=dummymerchant@okaxis&pn=LeMarche&am=1&cu=INR"
+                        alt="UPI QR Code" class="img-fluid border p-2 rounded">
+                </div>
+
+                <h4 class="fw-bold mb-4">₹{{ total }}</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold">
+                        ✅ I have made the payment
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

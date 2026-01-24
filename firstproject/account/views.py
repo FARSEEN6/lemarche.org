@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Cart
+from .models import Cart, Wishlist, Order, OrderItem
 from product.models import Product
 
 
@@ -154,3 +154,148 @@ def razorpay_success(request):
 @login_required
 def dummy_payment_success(request):
     return render(request, "dummy_success.html")
+
+
+# ❤️ WISHLIST
+@login_required
+def wishlist_view(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user).select_related("product")
+    return render(request, "wishlist.html", {"wishlist_items": wishlist_items})
+
+
+@login_required
+def toggle_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    w_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
+
+    if not created:
+        w_item.delete()
+        messages.info(request, "Removed from Wishlist")
+    else:
+        messages.success(request, "Added to Wishlist")
+
+    # Redirect back to previous page
+    return redirect(request.META.get("HTTP_REFERER", "home"))
+
+
+# 🚚 CHECKOUT: ADDRESS
+@login_required
+def checkout_address(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty")
+        return redirect("cart")
+
+    if request.method == "POST":
+        # Save address to session to pass to payment step
+        request.session['checkout_address'] = {
+            'customer_name': request.POST.get('customer_name'),
+            'address_line1': request.POST.get('address_line1'),
+            'address_line2': request.POST.get('address_line2'),
+            'city': request.POST.get('city'),
+            'state': request.POST.get('state'),
+            'pincode': request.POST.get('pincode'),
+            'phone_number': request.POST.get('phone_number'),
+        }
+        return redirect("checkout_payment")
+
+    return render(request, "address_form.html")
+
+
+# 💳 CHECKOUT: PAYMENT
+@login_required
+def checkout_payment(request):
+    address_data = request.session.get('checkout_address')
+    if not address_data:
+        return redirect("checkout_address")
+    
+    cart_items = Cart.objects.filter(user=request.user)
+    if not cart_items.exists():
+        return redirect("cart")
+        
+    total = sum(item.line_total for item in cart_items)
+
+    if request.method == "POST":
+        method = request.POST.get("payment_method")
+        
+        # 1. CASH ON DELIVERY
+        if method == "COD":
+            return create_order(request, address_data, "COD", "Pending")
+
+        # 2. GOOGLE PAY (UPI)
+        elif method == "GPAY":
+            return redirect("gpay_scan")
+
+        # 3. NETBANKING -> Redirect to dummy Razorpay
+        elif method == "NETBANKING":
+             return redirect("dummy_checkout")
+    
+    return render(request, "payment_select.html", {"total": total})
+
+
+#  helper to create order
+def create_order(request, address_data, payment_method, status):
+    cart_items = Cart.objects.filter(user=request.user)
+    total = sum(item.line_total for item in cart_items)
+
+    order = Order.objects.create(
+        user=request.user,
+        customer_name=address_data['customer_name'],
+        address_line1=address_data['address_line1'],
+        address_line2=address_data.get('address_line2', ''),
+        city=address_data['city'],
+        state=address_data['state'],
+        pincode=address_data['pincode'],
+        phone_number=address_data['phone_number'],
+        payment_method=payment_method,
+        status=status,
+        total_amount=total
+    )
+
+    # Move items to OrderItem
+    for item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            quantity=item.quantity,
+            price=item.product.p_price
+        )
+    
+    # Clear Cart
+    cart_items.delete()
+    
+    # Clear session
+    if 'checkout_address' in request.session:
+        del request.session['checkout_address']
+        
+    return redirect("dummy_payment_success")
+
+
+# 🔵 GPAY SCAN VIEW
+@login_required
+def gpay_scan(request):
+    address_data = request.session.get('checkout_address')
+    if not address_data:
+        return redirect("checkout_address")
+
+    cart_items = Cart.objects.filter(user=request.user)
+    total = sum(item.line_total for item in cart_items)
+
+    if request.method == "POST":
+         # User claims they paid. Create order.
+         return create_order(request, address_data, "GPAY", "Paid")
+    
+    return render(request, "gpay_scan.html", {"total": total})
+
+
+# 👮 ADMIN DASHBOARD
+@login_required
+def admin_dashboard(request):
+    if not request.user.is_staff:
+        messages.error(request, "Access Denied. Admins only.")
+        return redirect("home")
+
+    # Get all orders ordered by latest
+    orders = Order.objects.select_related("user").prefetch_related("items__product").order_by("-created_at")
+    
+    return render(request, "admin_dashboard.html", {"orders": orders})

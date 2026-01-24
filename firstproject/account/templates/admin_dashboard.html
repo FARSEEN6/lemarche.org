@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+{% block title %}Admin Dashboard – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Admin Dashboard</h2>
+        <span class="badge bg-dark">Total Orders: {{ orders.count }}</span>
+    </div>
+
+    {% if orders %}
+    <div class="table-responsive shadow rounded-4">
+        <table class="table table-hover align-middle mb-0" style="background:white;">
+            <thead class="bg-light">
+                <tr>
+                    <th class="py-3 ps-4">Order ID</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Payment</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="ps-4 fw-bold">#{{ order.id }}</td>
+                    <td>
+                        <div class="fw-bold">{{ order.customer_name }}</div>
+                        <small class="text-muted">{{ order.phone_number }}</small>
+                    </td>
+                    <td>
+                        <small>{{ order.address_line1 }}, {{ order.city }}<br>
+                            {{ order.state }} - {{ order.pincode }}</small>
+                    </td>
+                    <td>
+                        {% if order.payment_method == 'COD' %}<span class="badge bg-secondary">COD</span>
+                        {% elif order.payment_method == 'GPAY' %}<span class="badge bg-primary">GPay</span>
+                        {% else %}<span class="badge bg-danger">NetBanking</span>{% endif %}
+                    </td>
+                    <td>
+                        <ul class="list-unstyled mb-0 small">
+                            {% for item in order.items.all %}
+                            <li>{{ item.quantity }}x {{ item.product.p_name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="fw-bold">₹{{ order.total_amount }}</td>
+                    <td>
+                        {% if order.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark">{{ order.status }}</span>
+                        {% elif order.status == 'Paid' or order.status == 'Delivered' %}
+                        <span class="badge bg-success">{{ order.status }}</span>
+                        {% else %}
+                        <span class="badge bg-secondary">{{ order.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="small text-muted">{{ order.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h4 class="text-muted">No orders found.</h4>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

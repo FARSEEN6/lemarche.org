@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block title %}My Wishlist – Le Marche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 fw-bold">My Wishlist</h2>
+
+    {% if wishlist_items %}
+    <div class="row g-4">
+        {% for item in wishlist_items %}
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm" style="border-radius:12px; overflow:hidden;">
+                {% if item.product.p_image %}
+                <img src="{{ item.product.p_image.url }}" class="card-img-top"
+                    style="height:200px; object-fit:contain; padding:10px;">
+                {% else %}
+                <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body">
+                    <h6 class="card-title text-truncate">{{ item.product.p_name }}</h6>
+                    <p class="text-danger fw-bold">₹{{ item.product.p_price }}</p>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'detail_page' item.product.id %}" class="btn btn-outline-dark btn-sm">View</a>
+                        <a href="{% url 'toggle_wishlist' item.product.id %}" class="btn btn-danger btn-sm">Remove</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h4 class="text-muted">Your wishlist is empty.</h4>
+        <a href="{% url 'product' %}" class="btn btn-dark mt-3">Browse Products</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

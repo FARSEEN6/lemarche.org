@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,11 +47,9 @@
 
     /* 🧊 GLASS + GRADIENT – DARK MODE NAVBAR */
     body.dark-mode .navbar {
-      background: linear-gradient(
-        120deg,
-        rgba(15, 23, 42, 0.9),
-        rgba(30, 64, 175, 0.85)
-      ) !important;
+      background: linear-gradient(120deg,
+          rgba(15, 23, 42, 0.9),
+          rgba(30, 64, 175, 0.85)) !important;
       border-bottom: 1px solid rgba(55, 65, 81, 0.9);
     }
 
@@ -146,10 +145,21 @@
     }
 
     @keyframes toggle-bounce {
-      0%   { transform: scale(1) rotate(0deg); }
-      35%  { transform: scale(1.2) rotate(20deg); }
-      70%  { transform: scale(0.95) rotate(-10deg); }
-      100% { transform: scale(1) rotate(0deg); }
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      35% {
+        transform: scale(1.2) rotate(20deg);
+      }
+
+      70% {
+        transform: scale(0.95) rotate(-10deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
     }
 
     /* FOOTER */
@@ -218,16 +228,17 @@
 
     /* MOBILE-SPECIFIC STYLES */
     @media (max-width: 991.98px) {
+
       /* Hide desktop navbar on mobile */
       #mainNavbar {
         display: none !important;
       }
-      
+
       /* Show mobile navigation */
       .mobile-nav-container {
         display: block !important;
       }
-      
+
       /* Three-level mobile navigation */
       .top-nav-mobile {
         display: flex;
@@ -248,20 +259,18 @@
         -webkit-backdrop-filter: blur(18px);
         border-bottom: 1px solid rgba(148, 163, 184, 0.2);
       }
-      
+
       body.dark-mode .top-nav-mobile {
-        background: linear-gradient(
-          120deg,
-          rgba(15, 23, 42, 0.95),
-          rgba(30, 64, 175, 0.9)
-        ) !important;
+        background: linear-gradient(120deg,
+            rgba(15, 23, 42, 0.95),
+            rgba(30, 64, 175, 0.9)) !important;
         border-bottom: 1px solid rgba(55, 65, 81, 0.9);
       }
-      
+
       .top-nav-mobile.hidden {
         transform: translateY(-100%);
       }
-      
+
       .search-nav-mobile {
         margin-top: 10px;
         display: flex;
@@ -270,7 +279,8 @@
         width: 100%;
         padding: 10px 15px;
         position: fixed;
-        top: 50px; /* Height of top nav */
+        top: 50px;
+        /* Height of top nav */
         left: 0;
         right: 0;
         z-index: 1029;
@@ -281,20 +291,18 @@
         -webkit-backdrop-filter: blur(18px);
         border-bottom: 1px solid rgba(148, 163, 184, 0.2);
       }
-      
+
       body.dark-mode .search-nav-mobile {
-        background: linear-gradient(
-          120deg,
-          rgba(15, 23, 42, 0.95),
-          rgba(30, 64, 175, 0.9)
-        ) !important;
+        background: linear-gradient(120deg,
+            rgba(15, 23, 42, 0.95),
+            rgba(30, 64, 175, 0.9)) !important;
         border-bottom: 1px solid rgba(55, 65, 81, 0.9);
       }
-      
+
       .search-nav-mobile.hidden {
         transform: translateY(-100%);
       }
-      
+
       .main-nav-mobile {
         display: flex;
         justify-content: space-around;
@@ -312,17 +320,15 @@
         border-top: 1px solid rgba(148, 163, 184, 0.2);
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
       }
-      
+
       body.dark-mode .main-nav-mobile {
-        background: linear-gradient(
-          120deg,
-          rgba(15, 23, 42, 0.95),
-          rgba(30, 64, 175, 0.9)
-        ) !important;
+        background: linear-gradient(120deg,
+            rgba(15, 23, 42, 0.95),
+            rgba(30, 64, 175, 0.9)) !important;
         border-top: 1px solid rgba(55, 65, 81, 0.9);
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
       }
-      
+
       /* Mobile search bar */
       .mobile-search-wrapper {
         background: rgba(255, 255, 255, 0.9);
@@ -335,23 +341,23 @@
         flex-grow: 1;
         margin-right: 10px;
       }
-      
+
       body.dark-mode .mobile-search-wrapper {
         background: rgba(15, 23, 42, 0.9);
       }
-      
+
       .mobile-search-input {
         border: none;
         background: transparent;
         color: inherit;
         width: 100%;
       }
-      
+
       .mobile-search-input:focus {
         outline: none;
         box-shadow: none;
       }
-      
+
       /* Mobile cart button */
       .mobile-cart-btn {
         border: none;
@@ -366,7 +372,7 @@
         color: inherit;
         text-decoration: none;
       }
-      
+
       /* Mobile nav items */
       .mobile-nav-item {
         display: flex;
@@ -379,29 +385,29 @@
         border-radius: 8px;
         transition: background-color 0.2s ease;
       }
-      
+
       .mobile-nav-item:hover {
         background-color: rgba(148, 163, 184, 0.1);
       }
-      
+
       .mobile-nav-icon {
         font-size: 1.2rem;
         margin-bottom: 3px;
       }
-      
+
       /* User info in top nav */
       .mobile-user-info {
         display: flex;
         align-items: center;
         gap: 8px;
       }
-      
+
       .mobile-username {
         font-size: 0.9rem;
         font-weight: 500;
         color: inherit;
       }
-      
+
       .mobile-admin-badge {
         background-color: #0f172a;
         color: white;
@@ -410,18 +416,20 @@
         font-size: 0.7rem;
         font-weight: 600;
       }
-      
+
       body.dark-mode .mobile-admin-badge {
         background-color: #e5e7eb;
         color: #0f172a;
       }
-      
+
       /* Add padding to body to account for fixed navs */
       body {
-        padding-top: 110px; /* Top nav (50px) + Search nav (60px) */
-        padding-bottom: 70px; /* Main nav height */
+        padding-top: 110px;
+        /* Top nav (50px) + Search nav (60px) */
+        padding-bottom: 70px;
+        /* Main nav height */
       }
-      
+
       /* Ensure content starts below the fixed navs */
       main {
         min-height: calc(100vh - 180px);
@@ -437,21 +445,22 @@
 
     /* DESKTOP STYLES */
     @media (min-width: 992px) {
+
       /* Show desktop navbar on desktop */
       #mainNavbar {
         display: flex !important;
       }
-      
+
       /* Hide mobile navigation on desktop */
       .mobile-nav-container {
         display: none !important;
       }
-      
+
       .navbar-search-form {
         width: auto;
         margin-top: 0;
       }
-      
+
       /* Remove mobile padding on desktop */
       body {
         padding-top: 0;
@@ -464,13 +473,16 @@
       .nav-link-text {
         display: none;
       }
+
       .navbar-nav .nav-link {
         padding: 0.5rem;
         font-size: 1.2rem;
       }
+
       .navbar-toggler {
         margin-left: auto;
       }
+
       .navbar-brand {
         font-size: 1.25rem;
       }
@@ -480,97 +492,96 @@
 
 <body>
 
-<!-- DESKTOP NAVBAR (shown only on desktop) -->
-<nav class="navbar navbar-expand-lg shadow-sm sticky-top" id="mainNavbar">
-  <div class="container">
-    <!-- BRAND WITH LOGO THAT CHANGES WITH THEME -->
-    <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
-      <!-- Light mode logo (shown by default) -->
-      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png" 
-           class="logo-img light-logo" 
-           alt="Le Marche Logo - Light Mode">
-      <!-- Dark mode logo (hidden by default) -->
-      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png" 
-           class="logo-img dark-logo" 
-           style="display: none;" 
-           alt="Le Marche Logo - Dark Mode">
-    </a>
+  <!-- DESKTOP NAVBAR (shown only on desktop) -->
+  <nav class="navbar navbar-expand-lg shadow-sm sticky-top" id="mainNavbar">
+    <div class="container">
+      <!-- BRAND WITH LOGO THAT CHANGES WITH THEME -->
+      <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+        <!-- Light mode logo (shown by default) -->
+        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png"
+          class="logo-img light-logo" alt="Le Marche Logo - Light Mode">
+        <!-- Dark mode logo (hidden by default) -->
+        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png"
+          class="logo-img dark-logo" style="display: none;" alt="Le Marche Logo - Dark Mode">
+      </a>
 
-    <!-- TOGGLER (MOBILE) - Hidden by CSS on mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <!-- TOGGLER (MOBILE) - Hidden by CSS on mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- NAV CONTENT -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <!-- LEFT: MAIN LINKS -->
-      <ul class="navbar-nav me-auto align-items-center gap-2">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'product' %}">Products</a>
-        </li>
+      <!-- NAV CONTENT -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- LEFT: MAIN LINKS -->
+        <ul class="navbar-nav me-auto align-items-center gap-2">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'product' %}">Products</a>
+          </li>
 
-        <!-- CATEGORY DROPDOWN -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
-          <ul class="dropdown-menu">
-            {% if nav_categories %}
+          <!-- CATEGORY DROPDOWN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+            <ul class="dropdown-menu">
+              {% if nav_categories %}
               {% for cat in nav_categories %}
-                <li>
-                  <a class="dropdown-item" href="{% url 'product' %}?category={{ cat }}">
-                    {{ cat }}
-                  </a>
-                </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'product' %}?category={{ cat }}">
+                  {{ cat }}
+                </a>
+              </li>
               {% endfor %}
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li><a class="dropdown-item fw-semibold" href="{% url 'product' %}">All Products</a></li>
-            {% else %}
+              {% else %}
               <li><span class="dropdown-item-text text-muted">No categories yet</span></li>
-            {% endif %}
-          </ul>
-        </li>
-      </ul>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
 
-      <!-- RIGHT: SEARCH + USER + THEME -->
-      <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-        <!-- SEARCH BAR -->
-        <form method="GET"
-              action="{% url 'product' %}"
-              class="navbar-search-form d-flex align-items-center">
-          <div class="search-wrapper w-100">
-            <input class="form-control search-input ps-3"
-                   type="search"
-                   name="q"
-                   value="{{ request.GET.q }}"
-                   placeholder="Search products..."
-                   style="width: 220px;">
-            <button class="search-btn" type="submit" aria-label="Search">
-              <img src="https://cdn-icons-png.flaticon.com/128/10469/10469570.png"
-                   height="16" alt="">
-            </button>
-          </div>
-        </form>
+        <!-- RIGHT: SEARCH + USER + THEME -->
+        <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+          <!-- SEARCH BAR -->
+          <form method="GET" action="{% url 'product' %}" class="navbar-search-form d-flex align-items-center">
+            <div class="search-wrapper w-100">
+              <input class="form-control search-input ps-3" type="search" name="q" value="{{ request.GET.q }}"
+                placeholder="Search products..." style="width: 220px;">
+              <button class="search-btn" type="submit" aria-label="Search">
+                <img src="https://cdn-icons-png.flaticon.com/128/10469/10469570.png" height="16" alt="">
+              </button>
+            </div>
+          </form>
 
-        <!-- USER / AUTH + THEME -->
-        <ul class="navbar-nav align-items-center ms-lg-2 gap-1">
-          {% if user.is_authenticated %}
+          <!-- USER / AUTH + THEME -->
+          <ul class="navbar-nav align-items-center ms-lg-2 gap-1">
+            {% if user.is_authenticated %}
             <li class="nav-item d-flex align-items-center">
               <span class="nav-link nav-username d-flex align-items-center">
                 <a href="{% url 'profile' %}" class="nav-link">
                   {{ user.username }}
                 </a>
                 {% if user.is_staff %}
-                  <span class="badge rounded-pill text-bg-dark ms-2">
-                    Admin
-                  </span>
+                <span class="badge rounded-pill text-bg-dark ms-2">
+                  Admin
+                </span>
                 {% endif %}
               </span>
             </li>
 
             {% if user.is_staff %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'add_products' %}">Add Products</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_products' %}">Add Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-primary fw-bold" href="{% url 'admin_dashboard' %}">Dashboard</a>
+            </li>
             {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'wishlist' %}">❤️</a>
+            </li>
 
             <li class="nav-item">
               <a class="nav-link" href="{% url 'cart' %}">🛒 </a>
@@ -578,344 +589,342 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
-          {% else %}
+            {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login' %}">Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
-          {% endif %}
+            {% endif %}
 
-          <!-- 🌞 / 🌙 THEME TOGGLE – ALWAYS LAST -->
-          <li class="nav-item">
-            <button id="themeToggle" class="nav-icon-btn">
-              <img id="themeIcon"
-                   src="https://cdn-icons-png.flaticon.com/128/581/581601.png"
-                   alt="Toggle theme">
-            </button>
-          </li>
-        </ul>
+            <!-- 🌞 / 🌙 THEME TOGGLE – ALWAYS LAST -->
+            <li class="nav-item">
+              <button id="themeToggle" class="nav-icon-btn">
+                <img id="themeIcon" src="https://cdn-icons-png.flaticon.com/128/581/581601.png" alt="Toggle theme">
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- MOBILE NAVIGATION (Three Levels - shown only on mobile) -->
-<div class="mobile-nav-container d-lg-none">
-  <!-- First Nav: Brand + User + Theme (Hides on scroll) -->
-  <div class="top-nav-mobile">
-    <!-- Brand with logo that changes with theme -->
-    <a class="navbar-brand fw-semibold" href="{% url 'home' %}" style="color: inherit;">
-      <!-- Light mode logo (shown by default) -->
-      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png" 
-           class="mobile-logo-img mobile-light-logo" 
-           alt="Le Marche Logo - Light Mode">
-      <!-- Dark mode logo (hidden by default) -->
-      <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png" 
-           class="mobile-logo-img mobile-dark-logo" 
-           style="display: none;" 
-           alt="Le Marche Logo - Dark Mode">
-    </a>
-    
-    <!-- User Info + Theme Toggle -->
-    <div class="mobile-user-info">
-      {% if user.is_authenticated %}
+  <!-- MOBILE NAVIGATION (Three Levels - shown only on mobile) -->
+  <div class="mobile-nav-container d-lg-none">
+    <!-- First Nav: Brand + User + Theme (Hides on scroll) -->
+    <div class="top-nav-mobile">
+      <!-- Brand with logo that changes with theme -->
+      <a class="navbar-brand fw-semibold" href="{% url 'home' %}" style="color: inherit;">
+        <!-- Light mode logo (shown by default) -->
+        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png"
+          class="mobile-logo-img mobile-light-logo" alt="Le Marche Logo - Light Mode">
+        <!-- Dark mode logo (hidden by default) -->
+        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png"
+          class="mobile-logo-img mobile-dark-logo" style="display: none;" alt="Le Marche Logo - Dark Mode">
+      </a>
+
+      <!-- User Info + Theme Toggle -->
+      <div class="mobile-user-info">
+        {% if user.is_authenticated %}
         <div class="mobile-username">
           <a href="{% url 'profile' %}" style="color: inherit; text-decoration: none;">
             {{ user.username|truncatechars:10 }}
           </a>
           {% if user.is_staff %}
-            <span class="mobile-admin-badge">Admin</span>
+          <span class="mobile-admin-badge">Admin</span>
           {% endif %}
         </div>
-      {% else %}
+        {% else %}
         <div class="mobile-username">
           <a href="{% url 'login' %}" style="color: inherit; text-decoration: none;">
             Login
           </a>
         </div>
-      {% endif %}
-      
-      <!-- Theme Toggle -->
-      <button id="themeToggleMobile" class="nav-icon-btn">
-        <img id="themeIconMobile"
-             src="https://cdn-icons-png.flaticon.com/128/581/581601.png"
-             alt="Toggle theme"
-             width="20" height="20">
-      </button>
-    </div>
-  </div>
-  
-  <!-- Second Nav: Search + Cart (Hides on scroll) -->
-  <div class="search-nav-mobile">
-    <!-- Search Form -->
-    <form method="GET" action="{% url 'product' %}" class="d-flex align-items-center" style="flex-grow: 1;">
-      <div class="mobile-search-wrapper">
-        <input class="form-control mobile-search-input ps-3"
-               type="search"
-               name="q"
-               value="{{ request.GET.q }}"
-               placeholder="Search products...">
-        <button class="search-btn" type="submit" aria-label="Search">
-          <img src="https://cdn-icons-png.flaticon.com/128/10469/10469570.png"
-               height="16" alt="">
+        {% endif %}
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleMobile" class="nav-icon-btn">
+          <img id="themeIconMobile" src="https://cdn-icons-png.flaticon.com/128/581/581601.png" alt="Toggle theme"
+            width="20" height="20">
         </button>
       </div>
-    </form>
-    
-    <!-- Cart Button (only show if user is authenticated) -->
-    {% if user.is_authenticated %}
+    </div>
+
+    <!-- Second Nav: Search + Cart (Hides on scroll) -->
+    <div class="search-nav-mobile">
+      <!-- Search Form -->
+      <form method="GET" action="{% url 'product' %}" class="d-flex align-items-center" style="flex-grow: 1;">
+        <div class="mobile-search-wrapper">
+          <input class="form-control mobile-search-input ps-3" type="search" name="q" value="{{ request.GET.q }}"
+            placeholder="Search products...">
+          <button class="search-btn" type="submit" aria-label="Search">
+            <img src="https://cdn-icons-png.flaticon.com/128/10469/10469570.png" height="16" alt="">
+          </button>
+        </div>
+      </form>
+
+      <!-- Cart Button (only show if user is authenticated) -->
+      {% if user.is_authenticated %}
       <a href="{% url 'cart' %}" class="mobile-cart-btn" aria-label="Cart">
         🛒
       </a>
-    {% endif %}
-  </div>
-  
-  <!-- Third Nav: Products, Categories, Add Products, Logout (Always visible at bottom) -->
-  <div class="main-nav-mobile">
-    <!-- Products -->
-    <a href="{% url 'product' %}" class="mobile-nav-item">
-      <span>Products</span>
-    </a>
-    
-    <!-- Categories Dropdown Trigger -->
-    <div class="dropdown">
-      <a class="mobile-nav-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
-        <span>Categories</span>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-end">
-        {% if nav_categories %}
-          {% for cat in nav_categories %}
-            <li>
-              <a class="dropdown-item" href="{% url 'product' %}?category={{ cat }}">
-                {{ cat }}
-              </a>
-            </li>
-          {% endfor %}
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item fw-semibold" href="{% url 'product' %}">All Products</a></li>
-        {% else %}
-          <li><span class="dropdown-item-text text-muted">No categories yet</span></li>
-        {% endif %}
-      </ul>
+      {% endif %}
     </div>
-    
-    <!-- Cart button ONLY if user is authenticated -->
-    {% if user.is_authenticated %}
+
+    <!-- Third Nav: Products, Categories, Add Products, Logout (Always visible at bottom) -->
+    <div class="main-nav-mobile">
+      <!-- Products -->
+      <a href="{% url 'product' %}" class="mobile-nav-item">
+        <span>Products</span>
+      </a>
+
+      <!-- Categories Dropdown Trigger -->
+      <div class="dropdown">
+        <a class="mobile-nav-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+          style="cursor: pointer;">
+          <span>Categories</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          {% if nav_categories %}
+          {% for cat in nav_categories %}
+          <li>
+            <a class="dropdown-item" href="{% url 'product' %}?category={{ cat }}">
+              {{ cat }}
+            </a>
+          </li>
+          {% endfor %}
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item fw-semibold" href="{% url 'product' %}">All Products</a></li>
+          {% else %}
+          <li><span class="dropdown-item-text text-muted">No categories yet</span></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- Cart button ONLY if user is authenticated -->
+      {% if user.is_authenticated %}
+      <a href="{% url 'wishlist' %}" class="mobile-nav-item">
+        <span>❤️</span>
+      </a>
+
       <a href="{% url 'cart' %}" class="mobile-nav-item">
         <span>Cart</span>
       </a>
-    {% endif %}
-    
-    <!-- Add Products (for admin) -->
-    {% if user.is_authenticated and user.is_staff %}
+      {% endif %}
+
+      <!-- Add Products (for admin) -->
+      {% if user.is_authenticated and user.is_staff %}
       <a href="{% url 'add_products' %}" class="mobile-nav-item">
         <span>Add</span>
       </a>
-    {% endif %}
-    
-    <!-- Login/Logout -->
-    {% if user.is_authenticated %}
+      <a href="{% url 'admin_dashboard' %}" class="mobile-nav-item text-primary">
+        <span>Dash</span>
+      </a>
+      {% endif %}
+
+      <!-- Login/Logout -->
+      {% if user.is_authenticated %}
       <a href="{% url 'logout' %}" class="mobile-nav-item">
         <span>Logout</span>
       </a>
-    {% else %}
+      {% else %}
       <a href="{% url 'login' %}" class="mobile-nav-item">
         <span>Login</span>
       </a>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
-</div>
 
-<!-- PAGE CONTENT -->
-<main>
-  {% block content %}
-  {% endblock %}
-</main>
+  <!-- PAGE CONTENT -->
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
 
-<!-- FOOTER (unchanged) -->
-<footer class="footer-main mt-4">
-  <div class="container py-3">
-    <div class="row g-3 align-items-start">
-      <!-- FOOTER LOGO -->
-      <div class="col-12 d-flex align-items-center mb-3">
-        <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png"
-             alt="Le Marche Logo"
-             class="footer-logo-img">
-      </div>
+  <!-- FOOTER (unchanged) -->
+  <footer class="footer-main mt-4">
+    <div class="container py-3">
+      <div class="row g-3 align-items-start">
+        <!-- FOOTER LOGO -->
+        <div class="col-12 d-flex align-items-center mb-3">
+          <img src="https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png"
+            alt="Le Marche Logo" class="footer-logo-img">
+        </div>
 
-      <!-- ABOUT -->
-      <div class="col-12 col-md-4">
-        <h6 class="footer-title mb-1">Le Marche</h6>
-        <p class="mb-1">Premium gadgets, laptops and accessories.</p>
-        <p class="mb-0">Malappuram's trusted tech store.</p>
-      </div>
+        <!-- ABOUT -->
+        <div class="col-12 col-md-4">
+          <h6 class="footer-title mb-1">Le Marche</h6>
+          <p class="mb-1">Premium gadgets, laptops and accessories.</p>
+          <p class="mb-0">Malappuram's trusted tech store.</p>
+        </div>
 
-      <!-- CONTACT -->
-      <div class="col-12 col-md-4">
-        <h6 class="footer-title mb-1">Contact</h6>
-        <p class="mb-1">Kalad Road</p>
-        <p class="mb-1">Thanalur, Moolakkal</p>
-        <p class="mb-1">Malappuram, Kerala</p>
-        <p class="mb-2">📞 +91-8129159207</p>
-      </div>
+        <!-- CONTACT -->
+        <div class="col-12 col-md-4">
+          <h6 class="footer-title mb-1">Contact</h6>
+          <p class="mb-1">Kalad Road</p>
+          <p class="mb-1">Thanalur, Moolakkal</p>
+          <p class="mb-1">Malappuram, Kerala</p>
+          <p class="mb-2">📞 +91-8129159207</p>
+        </div>
 
-      <!-- MAP -->
-      <div class="col-12 col-md-4 d-flex justify-content-md-end">
-        <div class="map-embed">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.6298944350888!2d75.8862178!3d10.965597100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ad8657cf4e4d%3A0xbd09690538bf01a5!2sTirur%20-%20Tanur%20Rd%2C%20Moolakkal%2C%20Thanalur%2C%20Kerala!5e1!3m2!1sen!2sin!4v1764343835387!5m2!1sen!2sin"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
+        <!-- MAP -->
+        <div class="col-12 col-md-4 d-flex justify-content-md-end">
+          <div class="map-embed">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.6298944350888!2d75.8862178!3d10.965597100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ad8657cf4e4d%3A0xbd09690538bf01a5!2sTirur%20-%20Tanur%20Rd%2C%20Moolakkal%2C%20Thanalur%2C%20Kerala!5e1!3m2!1sen!2sin!4v1764343835387!5m2!1sen!2sin"
+              allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
         </div>
       </div>
+
+      <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between small">
+        <span>© {{ now|date:"Y" }} Le Marche. All rights reserved.</span>
+        <span>Built with / in Kerala.</span>
+      </div>
     </div>
+  </footer>
 
-    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between small">
-      <span>© {{ now|date:"Y" }} Le Marche. All rights reserved.</span>
-      <span>Built with / in Kerala.</span>
-    </div>
-  </div>
-</footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- 🌗 THEME TOGGLE LOGIC -->
+  <script>
+    const body = document.body;
+    const toggleBtn = document.getElementById("themeToggle");
+    const toggleBtnMobile = document.getElementById("themeToggleMobile");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeIconMobile = document.getElementById("themeIconMobile");
 
-<!-- 🌗 THEME TOGGLE LOGIC -->
-<script>
-  const body = document.body;
-  const toggleBtn = document.getElementById("themeToggle");
-  const toggleBtnMobile = document.getElementById("themeToggleMobile");
-  const themeIcon = document.getElementById("themeIcon");
-  const themeIconMobile = document.getElementById("themeIconMobile");
+    const sunIcon = "https://cdn-icons-png.flaticon.com/128/869/869869.png";
+    const moonIcon = "https://cdn-icons-png.flaticon.com/128/581/581601.png";
 
-  const sunIcon = "https://cdn-icons-png.flaticon.com/128/869/869869.png";
-  const moonIcon = "https://cdn-icons-png.flaticon.com/128/581/581601.png";
+    // Logo URLs
+    const lightLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png";
+    const darkLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png";
 
-  // Logo URLs
-  const lightLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769164832/logo_u4bpnf.png";
-  const darkLogoUrl = "https://res.cloudinary.com/dg1jeldcu/image/upload/v1769165083/logo_copy_qjcciz.png";
+    // Get logos
+    const lightLogoDesktop = document.querySelector('.light-logo');
+    const darkLogoDesktop = document.querySelector('.dark-logo');
+    const lightLogoMobile = document.querySelector('.mobile-light-logo');
+    const darkLogoMobile = document.querySelector('.mobile-dark-logo');
 
-  // Get logos
-  const lightLogoDesktop = document.querySelector('.light-logo');
-  const darkLogoDesktop = document.querySelector('.dark-logo');
-  const lightLogoMobile = document.querySelector('.mobile-light-logo');
-  const darkLogoMobile = document.querySelector('.mobile-dark-logo');
+    const savedTheme = localStorage.getItem("theme");
 
-  const savedTheme = localStorage.getItem("theme");
+    // Initialize theme and logos
+    function initTheme() {
+      if (savedTheme === "dark") {
+        body.classList.add("dark-mode");
+        if (themeIcon) themeIcon.src = sunIcon;
+        if (themeIconMobile) themeIconMobile.src = sunIcon;
 
-  // Initialize theme and logos
-  function initTheme() {
-    if (savedTheme === "dark") {
-      body.classList.add("dark-mode");
-      if (themeIcon) themeIcon.src = sunIcon;
-      if (themeIconMobile) themeIconMobile.src = sunIcon;
-      
-      // Show dark logos, hide light logos
-      if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
-      if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
-      if (lightLogoMobile) lightLogoMobile.style.display = "none";
-      if (darkLogoMobile) darkLogoMobile.style.display = "block";
-    } else {
-      if (themeIcon) themeIcon.src = moonIcon;
-      if (themeIconMobile) themeIconMobile.src = moonIcon;
-      
-      // Show light logos, hide dark logos
-      if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
-      if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
-      if (lightLogoMobile) lightLogoMobile.style.display = "block";
-      if (darkLogoMobile) darkLogoMobile.style.display = "none";
-    }
-  }
-
-  // Toggle theme function
-  function toggleTheme() {
-    // Add animation to both buttons
-    if (toggleBtn) toggleBtn.classList.add("theme-toggle-anim");
-    if (toggleBtnMobile) toggleBtnMobile.classList.add("theme-toggle-anim");
-    
-    setTimeout(() => {
-      if (toggleBtn) toggleBtn.classList.remove("theme-toggle-anim");
-      if (toggleBtnMobile) toggleBtnMobile.classList.remove("theme-toggle-anim");
-    }, 350);
-
-    // Toggle dark mode
-    body.classList.toggle("dark-mode");
-
-    // Update icons and save preference
-    if (body.classList.contains("dark-mode")) {
-      if (themeIcon) themeIcon.src = sunIcon;
-      if (themeIconMobile) themeIconMobile.src = sunIcon;
-      localStorage.setItem("theme", "dark");
-      
-      // Switch to dark logos
-      if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
-      if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
-      if (lightLogoMobile) lightLogoMobile.style.display = "none";
-      if (darkLogoMobile) darkLogoMobile.style.display = "block";
-    } else {
-      if (themeIcon) themeIcon.src = moonIcon;
-      if (themeIconMobile) themeIconMobile.src = moonIcon;
-      localStorage.setItem("theme", "light");
-      
-      // Switch to light logos
-      if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
-      if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
-      if (lightLogoMobile) lightLogoMobile.style.display = "block";
-      if (darkLogoMobile) darkLogoMobile.style.display = "none";
-    }
-  }
-
-  // Initialize on page load
-  initTheme();
-
-  // Add event listeners to both toggle buttons
-  if (toggleBtn) {
-    toggleBtn.onclick = toggleTheme;
-  }
-  
-  if (toggleBtnMobile) {
-    toggleBtnMobile.onclick = toggleTheme;
-  }
-
-  // Mobile scroll behavior for hiding top navs
-  let lastScrollTop = 0;
-  const topNavMobile = document.querySelector('.top-nav-mobile');
-  const searchNavMobile = document.querySelector('.search-nav-mobile');
-  let isScrolling;
-
-  window.addEventListener('scroll', function() {
-    if (window.innerWidth < 992) { // Only on mobile
-      // Clear our timeout throughout the scroll
-      window.clearTimeout(isScrolling);
-      
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // Determine scroll direction
-      if (scrollTop > lastScrollTop && scrollTop > 50) {
-        // Scrolling DOWN - hide top navs
-        if (topNavMobile) topNavMobile.classList.add('hidden');
-        if (searchNavMobile) searchNavMobile.classList.add('hidden');
+        // Show dark logos, hide light logos
+        if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
+        if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
+        if (lightLogoMobile) lightLogoMobile.style.display = "none";
+        if (darkLogoMobile) darkLogoMobile.style.display = "block";
       } else {
-        // Scrolling UP - show top navs
-        if (topNavMobile) topNavMobile.classList.remove('hidden');
-        if (searchNavMobile) searchNavMobile.classList.remove('hidden');
+        if (themeIcon) themeIcon.src = moonIcon;
+        if (themeIconMobile) themeIconMobile.src = moonIcon;
+
+        // Show light logos, hide dark logos
+        if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
+        if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
+        if (lightLogoMobile) lightLogoMobile.style.display = "block";
+        if (darkLogoMobile) darkLogoMobile.style.display = "none";
       }
-      
-      // Set a timeout to run after scrolling ends
-      isScrolling = setTimeout(function() {
-        // After scrolling stops, show the navs if at the top
-        if (scrollTop <= 50) {
+    }
+
+    // Toggle theme function
+    function toggleTheme() {
+      // Add animation to both buttons
+      if (toggleBtn) toggleBtn.classList.add("theme-toggle-anim");
+      if (toggleBtnMobile) toggleBtnMobile.classList.add("theme-toggle-anim");
+
+      setTimeout(() => {
+        if (toggleBtn) toggleBtn.classList.remove("theme-toggle-anim");
+        if (toggleBtnMobile) toggleBtnMobile.classList.remove("theme-toggle-anim");
+      }, 350);
+
+      // Toggle dark mode
+      body.classList.toggle("dark-mode");
+
+      // Update icons and save preference
+      if (body.classList.contains("dark-mode")) {
+        if (themeIcon) themeIcon.src = sunIcon;
+        if (themeIconMobile) themeIconMobile.src = sunIcon;
+        localStorage.setItem("theme", "dark");
+
+        // Switch to dark logos
+        if (lightLogoDesktop) lightLogoDesktop.style.display = "none";
+        if (darkLogoDesktop) darkLogoDesktop.style.display = "block";
+        if (lightLogoMobile) lightLogoMobile.style.display = "none";
+        if (darkLogoMobile) darkLogoMobile.style.display = "block";
+      } else {
+        if (themeIcon) themeIcon.src = moonIcon;
+        if (themeIconMobile) themeIconMobile.src = moonIcon;
+        localStorage.setItem("theme", "light");
+
+        // Switch to light logos
+        if (lightLogoDesktop) lightLogoDesktop.style.display = "block";
+        if (darkLogoDesktop) darkLogoDesktop.style.display = "none";
+        if (lightLogoMobile) lightLogoMobile.style.display = "block";
+        if (darkLogoMobile) darkLogoMobile.style.display = "none";
+      }
+    }
+
+    // Initialize on page load
+    initTheme();
+
+    // Add event listeners to both toggle buttons
+    if (toggleBtn) {
+      toggleBtn.onclick = toggleTheme;
+    }
+
+    if (toggleBtnMobile) {
+      toggleBtnMobile.onclick = toggleTheme;
+    }
+
+    // Mobile scroll behavior for hiding top navs
+    let lastScrollTop = 0;
+    const topNavMobile = document.querySelector('.top-nav-mobile');
+    const searchNavMobile = document.querySelector('.search-nav-mobile');
+    let isScrolling;
+
+    window.addEventListener('scroll', function () {
+      if (window.innerWidth < 992) { // Only on mobile
+        // Clear our timeout throughout the scroll
+        window.clearTimeout(isScrolling);
+
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Determine scroll direction
+        if (scrollTop > lastScrollTop && scrollTop > 50) {
+          // Scrolling DOWN - hide top navs
+          if (topNavMobile) topNavMobile.classList.add('hidden');
+          if (searchNavMobile) searchNavMobile.classList.add('hidden');
+        } else {
+          // Scrolling UP - show top navs
           if (topNavMobile) topNavMobile.classList.remove('hidden');
           if (searchNavMobile) searchNavMobile.classList.remove('hidden');
         }
-      }, 150);
-      
-      lastScrollTop = scrollTop;
-    }
-  }, false);
-</script>
+
+        // Set a timeout to run after scrolling ends
+        isScrolling = setTimeout(function () {
+          // After scrolling stops, show the navs if at the top
+          if (scrollTop <= 50) {
+            if (topNavMobile) topNavMobile.classList.remove('hidden');
+            if (searchNavMobile) searchNavMobile.classList.remove('hidden');
+          }
+        }, 150);
+
+        lastScrollTop = scrollTop;
+      }
+    }, false);
+  </script>
 
 </body>
+
 </html>

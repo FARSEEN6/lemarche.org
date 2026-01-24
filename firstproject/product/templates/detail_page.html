@@ -3,122 +3,153 @@
 {% block content %}
 
 <style>
-/* ---------- GENERAL ---------- */
-.product-page-wrapper {
-  padding-bottom: 170px;
-}
-
-/* ---------- IMAGE ---------- */
-.product-image {
-  max-height: 430px;
-  width: 100%;
-  object-fit: contain;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.12);
-}
-
-/* ---------- BADGES ---------- */
-.pill-label {
-  font-size: .75rem;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #f3f4f6;
-  font-weight: 600;
-}
-
-.stock-badge {
-  font-size: .8rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-}
-.stock-in { background:#dcfce7; color:#166534; }
-.stock-out { background:#fee2e2; color:#b91c1c; }
-
-/* ---------- STARS ---------- */
-.star { color:#fbbf24; font-size:1.2rem; cursor:pointer; }
-.star-muted { color:#d1d5db; }
-
-/* ---------- STICKY BAR ---------- */
-.sticky-action-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 1050;
-  backdrop-filter: blur(16px);
-  background: rgba(248,250,252,.97);
-  border-top: 1px solid rgba(148,163,184,.4);
-}
-
-.sticky-inner {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:.75rem;
-  padding:.75rem 0;
-  flex-wrap: wrap;
-}
-
-/* ---------- QTY ---------- */
-.qty-wrapper {
-  display:inline-flex;
-  align-items:center;
-  border-radius:999px;
-  border:1px solid #d1d5db;
-  padding:2px 6px;
-}
-.qty-btn {
-  border:none;
-  background:transparent;
-  width:28px;
-  height:28px;
-  font-weight:bold;
-}
-.qty-input {
-  width:40px;
-  border:none;
-  text-align:center;
-  background:transparent;
-}
-
-/* ---------- BUTTONS ---------- */
-.icon-circle-btn {
-  width:42px;
-  height:42px;
-  border-radius:999px;
-  border:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-}
-.icon-edit { background:#6366f1; }
-.icon-toggle { background:#0ea5e9; }
-.icon-delete { background:#ef4444; }
-
-.btn-buy-gradient {
-  background:linear-gradient(135deg,#2f3d34,#202221);
-  color:#fff;
-  border:1px solid black;
-}
-@media screen  and (max-width: 786px) {
- .adb1{
-    position: absolute;
-    bottom:180px;
-    right: 10px;
+  /* ---------- GENERAL ---------- */
+  .product-page-wrapper {
+    padding-bottom: 170px;
   }
-  .adb2{
-    position: absolute;
-    bottom:130px;
-    right: 10px;
+
+  /* ---------- IMAGE ---------- */
+  .product-image {
+    max-height: 430px;
+    width: 100%;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .12);
   }
-  .adb3{
-    position: absolute;
-    bottom:80px;
-    right: 10px;
+
+  /* ---------- BADGES ---------- */
+  .pill-label {
+    font-size: .75rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    font-weight: 600;
   }
-  
-}
+
+  .stock-badge {
+    font-size: .8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .stock-in {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .stock-out {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  /* ---------- STARS ---------- */
+  .star {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .star-muted {
+    color: #d1d5db;
+  }
+
+  /* ---------- STICKY BAR ---------- */
+  .sticky-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    backdrop-filter: blur(16px);
+    background: rgba(248, 250, 252, .97);
+    border-top: 1px solid rgba(148, 163, 184, .4);
+  }
+
+  .sticky-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .75rem 0;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- QTY ---------- */
+  .qty-wrapper {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    padding: 2px 6px;
+  }
+
+  .qty-btn {
+    border: none;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    font-weight: bold;
+  }
+
+  .qty-input {
+    width: 40px;
+    border: none;
+    text-align: center;
+    background: transparent;
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .icon-circle-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .icon-edit {
+    background: #6366f1;
+  }
+
+  .icon-toggle {
+    background: #0ea5e9;
+  }
+
+  .icon-delete {
+    background: #ef4444;
+  }
+
+  .btn-buy-gradient {
+    background: linear-gradient(135deg, #2f3d34, #202221);
+    color: #fff;
+    border: 1px solid black;
+  }
+
+  @media screen and (max-width: 786px) {
+    .adb1 {
+      position: absolute;
+      bottom: 180px;
+      right: 10px;
+    }
+
+    .adb2 {
+      position: absolute;
+      bottom: 130px;
+      right: 10px;
+    }
+
+    .adb3 {
+      position: absolute;
+      bottom: 80px;
+      right: 10px;
+    }
+
+  }
 </style>
 
 <div class="container product-page-wrapper py-5">
@@ -131,20 +162,54 @@
 
     <!-- IMAGES -->
     <div class="col-md-5">
+      {% if product.p_image or product.p_image2 %}
+      <div id="productCarousel" class="carousel slide product-image" data-bs-ride="false"
+        style="padding:0; overflow:hidden;">
 
-      {% if product.p_image %}
-        <img src="{{ product.p_image.url }}" class="product-image mb-3">
+        <!-- Indicators -->
+        {% if product.p_image and product.p_image2 %}
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+        {% endif %}
+
+        <div class="carousel-inner h-100">
+          {% if product.p_image %}
+          <div class="carousel-item {% if product.p_image %}active{% endif %} h-100">
+            <img src="{{ product.p_image.url }}" class="d-block w-100 h-100" style="object-fit: contain;"
+              alt="{{ product.p_name }}">
+          </div>
+          {% endif %}
+
+          {% if product.p_image2 %}
+          <div class="carousel-item {% if not product.p_image %}active{% endif %} h-100">
+            <img src="{{ product.p_image2.url }}" class="d-block w-100 h-100" style="object-fit: contain;"
+              alt="{{ product.p_name }}">
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Controls -->
+        {% if product.p_image and product.p_image2 %}
+        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"
+            style="background-size: 50%;"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"
+            style="background-size: 50%;"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        {% endif %}
+      </div>
+      {% else %}
+      <!-- Fallback Image -->
+      <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg" class="product-image"
+        alt="No image available">
       {% endif %}
-
-      {% if product.p_image2 %}
-        <img src="{{ product.p_image2.url }}" class="product-image">
-      {% endif %}
-
-      {% if not product.p_image and not product.p_image2 %}
-        <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
-             class="product-image">
-      {% endif %}
-
     </div>
 
     <!-- DETAILS -->
@@ -153,10 +218,14 @@
       <div class="d-flex gap-2 mb-2">
         <span class="pill-label">{{ product.p_category }}</span>
         {% if product.in_stock %}
-          <span class="stock-badge stock-in">In stock</span>
+        <span class="stock-badge stock-in">In stock</span>
         {% else %}
-          <span class="stock-badge stock-out">Out of stock</span>
+        <span class="stock-badge stock-out">Out of stock</span>
         {% endif %}
+
+        <a href="{% url 'toggle_wishlist' product.id %}" class="btn btn-outline-danger btn-sm rounded-pill ms-auto">
+          ❤️ Wishlist
+        </a>
       </div>
 
       <h2 class="fw-bold">{{ product.p_name }}</h2>
@@ -169,13 +238,11 @@
           <form method="post" action="{% url 'rate_product' product.id %}">
             {% csrf_token %}
             <input type="hidden" name="rating" value="{{ forloop.counter }}">
-            <button type="submit"
-                    style="border:none;background:none;padding:0;">
-              {% if forloop.counter <= product.rating %}
-                <span class="star">★</span>
-              {% else %}
+            <button type="submit" style="border:none;background:none;padding:0;">
+              {% if forloop.counter <= product.rating %} <span class="star">★</span>
+                {% else %}
                 <span class="star star-muted">★</span>
-              {% endif %}
+                {% endif %}
             </button>
           </form>
           {% endfor %}
@@ -187,7 +254,7 @@
         </div>
 
         {% if not user.is_authenticated %}
-          <small class="text-muted">Login to rate this product</small>
+        <small class="text-muted">Login to rate this product</small>
         {% endif %}
       </div>
 
@@ -214,12 +281,12 @@
 <div class="sticky-action-bar">
   {% if not user.is_authenticated %}
   <div style=" justify-content: center; text-align: center; margin-top: 5px;">
-  <a href="{% url 'login' %}" class="btn btn-danger">Login to Buy</a>
+    <a href="{% url 'login' %}" class="btn btn-danger">Login to Buy</a>
   </div>
   {% endif %}
   <div class="container">
     <div class="sticky-inner">
-{% if user.is_authenticated %}
+      {% if user.is_authenticated %}
       <!-- Quantity -->
       <div class="qty-wrapper">
         <button type="button" class="qty-btn" id="qtyMinus">−</button>
@@ -228,22 +295,20 @@
       </div>
 
       <!-- ADMIN -->
-     {% if user.is_staff %}
-<div class="d-flex gap-2">
-  <a href="{% url 'edit_products' product.id %}"
-     class="icon-circle-btn icon-edit adb1">✏</a>
+      {% if user.is_staff %}
+      <div class="d-flex gap-2">
+        <a href="{% url 'edit_products' product.id %}" class="icon-circle-btn icon-edit adb1">✏</a>
 
-  <form method="post" action="{% url 'toggle_stock' product.id %}">
-    {% csrf_token %}
-    <button class="icon-circle-btn icon-toggle adb2">
-      {% if product.in_stock %}Out{% else %}In{% endif %}
-    </button>
-  </form>
+        <form method="post" action="{% url 'toggle_stock' product.id %}">
+          {% csrf_token %}
+          <button class="icon-circle-btn icon-toggle adb2">
+            {% if product.in_stock %}Out{% else %}In{% endif %}
+          </button>
+        </form>
 
-  <a href="{% url 'delete_product' product.id %}"
-     class="icon-circle-btn icon-delete adb3">🗑</a>
-</div>
-{% endif %}
+        <a href="{% url 'delete_product' product.id %}" class="icon-circle-btn icon-delete adb3">🗑</a>
+      </div>
+      {% endif %}
 
 
       <!-- BUY -->
@@ -255,35 +320,35 @@
           <button type="submit" class="btn btn-buy-gradient">Cart 🛒</button>
         </form>
 
-        <a href="{% url 'dummy_checkout' %}" class="btn btn-buy-gradient">
+        <a href="{% url 'checkout_address' %}" class="btn btn-buy-gradient">
           Buy Now
         </a>
         {% else %}
-          <button class="btn btn-secondary" disabled>Out of Stock</button>
+        <button class="btn btn-secondary" disabled>Out of Stock</button>
         {% endif %}
       </div>
 
-  {% endif %}
+      {% endif %}
     </div>
   </div>
 </div>
 
 
 <script>
-const minus = document.getElementById("qtyMinus");
-const plus = document.getElementById("qtyPlus");
-const input = document.getElementById("qtyInput");
-const hidden = document.getElementById("qtyHidden");
+  const minus = document.getElementById("qtyMinus");
+  const plus = document.getElementById("qtyPlus");
+  const input = document.getElementById("qtyInput");
+  const hidden = document.getElementById("qtyHidden");
 
-minus.onclick = () => {
-  input.value = Math.max(1, input.value - 1);
-  hidden.value = input.value;
-};
+  minus.onclick = () => {
+    input.value = Math.max(1, input.value - 1);
+    hidden.value = input.value;
+  };
 
-plus.onclick = () => {
-  input.value = Math.min(99, +input.value + 1);
-  hidden.value = input.value;
-};
+  plus.onclick = () => {
+    input.value = Math.min(99, +input.value + 1);
+    hidden.value = input.value;
+  };
 </script>
 
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% block title %}Checkout - Payment{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h4 class="mb-4 text-center fw-bold">Select Payment Method</h4>
+
+                    <h5 class="text-center mb-4">Total: ₹{{ total }}</h5>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="d-grid gap-3">
+                            <!-- COD -->
+                            <button type="submit" name="payment_method" value="COD"
+                                class="btn btn-outline-dark py-3 rounded-pill fw-bold text-start ps-4">
+                                💵 Cash on Delivery
+                            </button>
+
+                            <!-- GPAY -->
+                            <button type="submit" name="payment_method" value="GPAY"
+                                class="btn btn-outline-primary py-3 rounded-pill fw-bold text-start ps-4">
+                                🔵 Google Pay (UPI)
+                            </button>
+
+                            <!-- NETBANKING -->
+                            <button type="submit" name="payment_method" value="NETBANKING"
+                                class="btn btn-outline-danger py-3 rounded-pill fw-bold text-start ps-4">
+                                🏦 Net Banking (Cards/Wallet)
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
