@@ -3,223 +3,244 @@
 {% block content %}
 
 <style>
-/* ---------- GLOBAL ---------- */
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* generic sections that react to dark mode */
-.section-default {
-  background: transparent;
-}
-
-.section-muted {
-  background: #f3f4f6;
-}
-body.dark-mode .section-muted {
-  background: #020617;
-}
-
-/* ---------- HERO ---------- */
-.hero-section {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  color: #f9fafb;
-  overflow: hidden;
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background: url("https://c0.wallpaperflare.com/preview/815/825/234/car-dial-interior-light.jpg")
-             center/cover no-repeat;
-  filter: brightness(1.45);
-}
-body.dark-mode .hero-bg {
-  filter: brightness(1.28);
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(0,0,0,0.55),
-    rgba(0,0,0,0.85)
-  );
-}
-
-.hero-content {
-  position: relative;
-  z-index: 5;
-}
-
-.hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.9rem;
-  background: rgba(0,0,0,0.55);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.hero-title {
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-
-.hero-subtitle {
-  max-width: 520px;
-  color: #e5e7eb;
-}
-
-/* ---------- GENERIC PILL BUTTON ---------- */
-.btn-pill {
-  border-radius: 999px !important;
-  padding: 0.6rem 1.6rem;
-  font-weight: 600;
-}
-
-/* ---------- FEATURES ---------- */
-.feature-card {
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  padding: 18px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  height: 100%;
-}
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 32px rgba(15,23,42,0.08);
-  border-color: #d1d5db;
-}
-body.dark-mode .feature-card {
-  background: #020617;
-  border-color: #1f2937;
-}
-body.dark-mode .feature-card:hover {
-  border-color: #4b5563;
-}
-
-.feature-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-.feature-text {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-body.dark-mode .feature-text {
-  color: #9ca3af;
-}
-
-/* ---------- CATEGORY PILLS ---------- */
-.category-pill {
-  border-radius: 999px;
-  padding: 0.35rem 0.9rem;
-  font-size: 0.85rem;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  color: #374151;
-  text-decoration: none;
-}
-.category-pill:hover {
-  background: #111827;
-  color: #f9fafb;
-}
-body.dark-mode .category-pill {
-  border-color: #374151;
-  background: #020617;
-  color: #e5e7eb;
-}
-body.dark-mode .category-pill:hover {
-  background: #f9fafb;
-  color: #020617;
-}
-
-/* ---------- PRODUCT CARDS ---------- */
-.home-product-card {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-  background: #ffffff !important;  /* light-mode card */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.home-product-card:hover {
-  transform: translateY(-4px);
-  border-color: #d1d5db;
-  box-shadow: 0 12px 30px rgba(15,23,42,0.12);
-}
-body.dark-mode .home-product-card {
-  background: #020617 !important;  /* dark card */
-  border-color: #1f2937;
-}
-body.dark-mode .home-product-card:hover {
-  border-color: #334155;
-}
-
-.home-product-img {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  border-bottom: 1px solid #e5e7eb;
-}
-body.dark-mode .home-product-img {
-  border-bottom-color: #1f2937;
-}
-
-.home-product-title {
-  font-size: 0.98rem;
-  font-weight: 600;
-  margin-bottom: 0.15rem;
-}
-.home-product-meta {
-  font-size: 0.8rem;
-  color: #6b7280;
-}
-body.dark-mode .home-product-meta {
-  color: #9ca3af;
-}
-.home-product-price {
-  font-size: 0.98rem;
-  font-weight: 700;
-}
-
-.btn-view-small {
-  border-radius: 999px;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-/* ---------- TESTIMONIAL STRIP ---------- */
-.testimonial-strip {
-  border-radius: 16px;
-  padding: 18px 20px;
-  background: #0f172a;
-  color: #e5e7eb;
-}
-body.dark-mode .testimonial-strip {
-  background: #1e293b;
-}
-.testimonial-quote {
-  font-size: 0.9rem;
-}
-@media screen and (max-width: 768px) {
-  .hero-section {
-    min-height: 60vh;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+  /* ---------- GLOBAL ---------- */
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
-  
-}
+
+  /* generic sections that react to dark mode */
+  .section-default {
+    background: transparent;
+  }
+
+  .section-muted {
+    background: #f3f4f6;
+  }
+
+  body.dark-mode .section-muted {
+    background: #020617;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: #f9fafb;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url("https://c0.wallpaperflare.com/preview/815/825/234/car-dial-interior-light.jpg") center/cover no-repeat;
+    filter: brightness(1.45);
+  }
+
+  body.dark-mode .hero-bg {
+    filter: brightness(1.28);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg,
+        rgba(0, 0, 0, 0.55),
+        rgba(0, 0, 0, 0.85));
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.9rem;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-subtitle {
+    max-width: 520px;
+    color: #e5e7eb;
+  }
+
+  /* ---------- GENERIC PILL BUTTON ---------- */
+  .btn-pill {
+    border-radius: 999px !important;
+    padding: 0.6rem 1.6rem;
+    font-weight: 600;
+  }
+
+  /* ---------- FEATURES ---------- */
+  .feature-card {
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    padding: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    height: 100%;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+    border-color: #d1d5db;
+  }
+
+  body.dark-mode .feature-card {
+    background: #020617;
+    border-color: #1f2937;
+  }
+
+  body.dark-mode .feature-card:hover {
+    border-color: #4b5563;
+  }
+
+  .feature-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .feature-text {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  body.dark-mode .feature-text {
+    color: #9ca3af;
+  }
+
+  /* ---------- CATEGORY PILLS ---------- */
+  .category-pill {
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.85rem;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    color: #374151;
+    text-decoration: none;
+  }
+
+  .category-pill:hover {
+    background: #111827;
+    color: #f9fafb;
+  }
+
+  body.dark-mode .category-pill {
+    border-color: #374151;
+    background: #020617;
+    color: #e5e7eb;
+  }
+
+  body.dark-mode .category-pill:hover {
+    background: #f9fafb;
+    color: #020617;
+  }
+
+  /* ---------- PRODUCT CARDS ---------- */
+  .home-product-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    background: #ffffff !important;
+    /* light-mode card */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .home-product-card:hover {
+    transform: translateY(-4px);
+    border-color: #d1d5db;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  }
+
+  body.dark-mode .home-product-card {
+    background: #020617 !important;
+    /* dark card */
+    border-color: #1f2937;
+  }
+
+  body.dark-mode .home-product-card:hover {
+    border-color: #334155;
+  }
+
+  .home-product-img {
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
+    padding: 12px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  body.dark-mode .home-product-img {
+    border-bottom-color: #1f2937;
+  }
+
+  .home-product-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+
+  .home-product-meta {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+
+  body.dark-mode .home-product-meta {
+    color: #9ca3af;
+  }
+
+  .home-product-price {
+    font-size: 0.98rem;
+    font-weight: 700;
+  }
+
+  .btn-view-small {
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* ---------- TESTIMONIAL STRIP ---------- */
+  .testimonial-strip {
+    border-radius: 16px;
+    padding: 18px 20px;
+    background: #0f172a;
+    color: #e5e7eb;
+  }
+
+  body.dark-mode .testimonial-strip {
+    background: #1e293b;
+  }
+
+  .testimonial-quote {
+    font-size: 0.9rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .hero-section {
+      min-height: 60vh;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+  }
 </style>
 
 <!-- ===== HERO ===== -->
@@ -240,7 +261,7 @@ body.dark-mode .testimonial-strip {
         </h1>
 
         <p class="hero-subtitle mb-4">
-          Premium gadgets, laptops & accessories — 
+          Premium gadgets, laptops & accessories —
         </p>
 
         <a href="{% url 'product' %}" class="btn btn-light btn-pill">
@@ -302,15 +323,15 @@ body.dark-mode .testimonial-strip {
 
     <div class="d-flex flex-wrap gap-2">
       {% if categories %}
-        {% for cat in categories %}
-          <a href="{% url 'product' %}?category={{ cat }}" class="category-pill">
-            {{ cat }}
-          </a>
-        {% endfor %}
+      {% for cat in categories %}
+      <a href="{% url 'product' %}?category={{ cat }}" class="category-pill">
+        {{ cat }}
+      </a>
+      {% endfor %}
       {% else %}
-        <span class="small text-muted">
-          Categories will appear here when you add more products.
-        </span>
+      <span class="small text-muted">
+        Categories will appear here when you add more products.
+      </span>
       {% endif %}
     </div>
   </div>
@@ -328,56 +349,49 @@ body.dark-mode .testimonial-strip {
 
     <div class="row g-4">
       {% for prod in products %}
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="home-product-card h-100">
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="home-product-card h-100">
 
-            {% if prod.p_image %}
-              <a href="{% url 'detail_page' prod.id %}">
-                <img src="{{ prod.p_image.url }}"
-                     alt="{{ prod.p_name }}"
-                     loading="lazy"
-                     class="home-product-img">
-              </a>
-            {% else %}
-              <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg"
-                   alt="No image available"
-                   loading="lazy"
-                   class="home-product-img">
-            {% endif %}
+          {% if prod.p_image %}
+          <a href="{% url 'detail_page' prod.id %}">
+            <img src="{{ prod.p_image.url }}" alt="{{ prod.p_name }}" loading="lazy" class="home-product-img">
+          </a>
+          {% else %}
+          <img src="https://www.freeiconspng.com/uploads/no-image-icon-23.jpg" alt="No image available" loading="lazy"
+            class="home-product-img">
+          {% endif %}
 
-            <div class="p-3 d-flex flex-column">
-              <div class="home-product-title">
-                {{ prod.p_name|truncatechars:30 }}
-              </div>
-
-              <div class="home-product-meta mb-1">
-                {{ prod.p_category }}
-              </div>
-
-              <div class="home-product-price text-success mb-3">
-                ₹{{ prod.p_price }}
-              </div>
-
-              <div class="d-flex gap-2 mt-auto">
-                <a href="{% url 'detail_page' prod.id %}"
-                   class="btn btn-dark btn-view-small flex-grow-1">
-                  View →
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'add_to_cart' prod.id %}"
-                   class="btn btn-outline-secondary btn-view-small">
-                  🛒
-                </a>
-                {% endif %}
-              </div>
+          <div class="p-3 d-flex flex-column">
+            <div class="home-product-title">
+              {{ prod.p_name|truncatechars:30 }}
             </div>
 
+            <div class="home-product-meta mb-1">
+              {{ prod.p_category }}
+            </div>
+
+            <div class="home-product-price text-success mb-3">
+              ₹{{ prod.p_price }}
+            </div>
+
+            <div class="d-flex gap-2 mt-auto">
+              <a href="{% url 'detail_page' prod.id %}" class="btn btn-dark btn-view-small flex-grow-1">
+                View →
+              </a>
+              {% if user.is_authenticated %}
+              <a href="{% url 'add_to_cart' prod.id %}" class="btn btn-outline-secondary btn-view-small">
+                🛒
+              </a>
+              {% endif %}
+            </div>
           </div>
+
         </div>
+      </div>
       {% empty %}
-        <div class="col-12">
-          <p class="text-muted mb-0">No products added yet. Once you add items, they’ll appear here.</p>
-        </div>
+      <div class="col-12">
+        <p class="text-muted mb-0">No products added yet. Once you add items, they’ll appear here.</p>
+      </div>
       {% endfor %}
     </div>
   </div>
