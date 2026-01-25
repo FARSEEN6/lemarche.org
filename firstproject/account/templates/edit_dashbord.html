@@ -1,0 +1,191 @@
+{% extends "index.html" %}
+{% block title %}Edit Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-1">
+                            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Order #{{ order.id }}</li>
+                        </ol>
+                    </nav>
+                    <h2 class="fw-bold m-0">Order Details</h2>
+                </div>
+                <!-- Delete Button -->
+                <a href="{% url 'delete_order' order.id %}" class="btn btn-danger btn-sm px-3 fw-bold rounded-pill"
+                    onclick="return confirm('Permanently delete this order?');">
+                    <i class="bi bi-trash me-1"></i> Delete Order
+                </a>
+            </div>
+
+            <div class="row g-4">
+                <!-- LEFT COLUMN: Order Details Form -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-0 rounded-3 h-100">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h5 class="fw-bold m-0 text-dark">Order Information</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form method="POST">
+                                {% csrf_token %}
+
+                                <!-- Section: Customer & Contact -->
+                                <h6 class="text-uppercase text-muted fw-bold small mb-3">Customer & Contact</h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Full Name</label>
+                                        <input type="text" name="customer_name" class="form-control"
+                                            value="{{ order.customer_name }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Phone Number</label>
+                                        <input type="text" name="phone_number" class="form-control"
+                                            value="{{ order.phone_number }}" required>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Shipping Address -->
+                                <h6 class="text-uppercase text-muted fw-bold small mb-3 border-top pt-3">Shipping
+                                    Address</h6>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Address Line 1</label>
+                                    <input type="text" name="address_line1" class="form-control"
+                                        value="{{ order.address_line1 }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Address Line 2 (Optional)</label>
+                                    <input type="text" name="address_line2" class="form-control"
+                                        value="{{ order.address_line2|default:'' }}">
+                                </div>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-semibold">City</label>
+                                        <input type="text" name="city" class="form-control" value="{{ order.city }}"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-semibold">State</label>
+                                        <input type="text" name="state" class="form-control" value="{{ order.state }}"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-semibold">Pincode</label>
+                                        <input type="text" name="pincode" class="form-control"
+                                            value="{{ order.pincode }}" required>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Order Status -->
+                                <h6 class="text-uppercase text-muted fw-bold small mb-3 border-top pt-3">Status &
+                                    Payment</h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Payment Method</label>
+                                        <select name="payment_method" class="form-select bg-light">
+                                            <option value="COD" {% if order.payment_method=="COD" %}selected{% endif %}>
+                                                Cash on Delivery</option>
+                                            <option value="GPAY" {% if order.payment_method=="GPAY" %}selected{% endif
+                                                %}>Google Pay</option>
+                                            <option value="NETBANKING" {% if order.payment_method=="NETBANKING"
+                                                %}selected{% endif %}>Netbanking</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Order Status</label>
+                                        <select name="status" class="form-select bg-light fw-bold text-dark">
+                                            <option value="Pending" {% if order.status=="Pending" %}selected{% endif %}>
+                                                Pending</option>
+                                            <option value="Paid" {% if order.status=="Paid" %}selected{% endif %}>Paid
+                                            </option>
+                                            <option value="Shipped" {% if order.status=="Shipped" %}selected{% endif %}>
+                                                Shipped</option>
+                                            <option value="Delivered" {% if order.status=="Delivered" %}selected{% endif
+                                                %}>Delivered</option>
+                                            <option value="Cancelled" {% if order.status=="Cancelled" %}selected{% endif
+                                                %}>Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit"
+                                        class="btn btn-warning py-2 fw-bold text-dark border-0 shadow-sm">Save
+                                        Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Order Items -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h5 class="fw-bold m-0 text-dark">Order Items</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <form method="POST" action="{% url 'update_order_items' order.id %}">
+                                {% csrf_token %}
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="bg-light small">
+                                            <tr>
+                                                <th class="ps-3">Product</th>
+                                                <th>Qty</th>
+                                                <th class="text-end pe-3">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in order.items.all %}
+                                            <tr>
+                                                <td class="ps-3">
+                                                    <div class="small fw-semibold text-truncate"
+                                                        style="max-width: 120px;" title="{{ item.product.p_name }}">{{
+                                                        item.product.p_name }}</div>
+                                                </td>
+                                                <td style="width: 80px;">
+                                                    <input type="number" name="qty_{{ item.id }}"
+                                                        value="{{ item.quantity }}"
+                                                        class="form-control form-control-sm text-center px-1" min="0">
+                                                </td>
+                                                <td class="text-end pe-3 small fw-bold">
+                                                    ₹{% widthratio item.price 1 item.quantity %}
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="3" class="text-center py-4 text-muted small">No items in
+                                                    this order.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Order Summary Footer -->
+                                <div class="bg-light p-3 border-top">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="fw-bold text-secondary">Order Total:</span>
+                                        <span class="fs-5 fw-bold text-dark">₹{{ order.total_amount }}</span>
+                                    </div>
+                                    <small class="text-muted d-block text-center mb-2" style="font-size: 0.75rem;">Set
+                                        quantity to 0 to remove item.</small>
+                                    <button type="submit"
+                                        class="btn btn-outline-dark w-100 btn-sm fw-bold border-2">Update
+                                        Quantities</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
