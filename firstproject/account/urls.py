@@ -1,3 +1,4 @@
+
 from django.urls import path
 from . import views
 
@@ -32,4 +33,7 @@ urlpatterns = [
 
     # ADMIN
     path("dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    path("order/edit/<int:order_id>/", views.edit_order, name="edit_order"),
+    path("order/update-items/<int:order_id>/", views.update_order_items, name="update_order_items"),
+    path("order/delete/<int:order_id>/", views.delete_order, name="delete_order"),
 ]

@@ -1,3 +1,4 @@
+
 import razorpay
 import json
 
@@ -9,6 +10,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.db.models import Sum
 
 from .models import Cart, Wishlist, Order, OrderItem
 from product.models import Product
@@ -314,7 +317,111 @@ def admin_dashboard(request):
         messages.error(request, "Access Denied. Admins only.")
         return redirect("home")
 
-    # Get all orders ordered by latest
-    orders = Order.objects.select_related("user").prefetch_related("items__product").order_by("-created_at")
+    # Stats
+    total_orders = Order.objects.count()
+    paid_orders = Order.objects.filter(status='Paid').count()
     
-    return render(request, "admin_dashboard.html", {"orders": orders})
+    today_sales = Order.objects.filter(
+        status='Paid', 
+        created_at__date=timezone.now().date()
+    ).aggregate(Sum('total_amount'))['total_amount__sum'] or 0
+
+    stats = {
+        'total_orders': total_orders,
+        'paid_orders': paid_orders,
+        'today_sales': today_sales
+    }
+
+    # Order retrieval needed for list
+    orders = Order.objects.select_related("user").prefetch_related("items__product").order_by("-created_at")
+
+    # Search functionality
+    query = request.GET.get('q')
+    if query:
+        orders = orders.filter(
+            id__icontains=query
+        ) | orders.filter(
+            customer_name__icontains=query
+        ) | orders.filter(
+            phone_number__icontains=query
+        )
+
+    return render(request, "admin_dashboard.html", {
+        "orders": orders,
+        "stats": stats,
+        "query": query or ""
+    })
+
+# ✏️ EDIT ORDER (Admin)
+@login_required
+def edit_order(request, order_id):
+    if not request.user.is_staff:
+         messages.error(request, "Access Denied.")
+         return redirect("home")
+         
+    order = get_object_or_404(Order, id=order_id)
+    
+    if request.method == "POST":
+        order.customer_name = request.POST.get("customer_name")
+        order.phone_number = request.POST.get("phone_number")
+        order.address_line1 = request.POST.get("address_line1")
+        order.address_line2 = request.POST.get("address_line2")
+        order.city = request.POST.get("city")
+        order.state = request.POST.get("state")
+        order.pincode = request.POST.get("pincode")
+        
+        order.payment_method = request.POST.get("payment_method")
+        order.status = request.POST.get("status")
+        
+        order.save()
+        messages.success(request, "Order updated successfully")
+        return redirect("admin_dashboard")
+        
+    return render(request, "edit_dashbord.html", {"order": order})
+
+
+# 🔄 UPDATE ORDER ITEMS (Admin)
+@login_required
+def update_order_items(request, order_id):
+    if not request.user.is_staff:
+        return redirect("home")
+        
+    order = get_object_or_404(Order, id=order_id)
+    
+    if request.method == "POST":
+        for key, value in request.POST.items():
+            if key.startswith("qty_"):
+                item_id = key.split("_")[1]
+                qty = int(value)
+                
+                try:
+                    item = OrderItem.objects.get(id=item_id, order=order)
+                    if qty > 0:
+                        item.quantity = qty
+                        item.save()
+                    else:
+                        item.delete()
+                except OrderItem.DoesNotExist:
+                    pass
+        
+        # Recalculate order total
+        new_total = sum(item.quantity * item.price for item in order.items.all())
+        order.total_amount = new_total
+        order.save()
+        
+        messages.success(request, "Order items updated")
+        return redirect("edit_order", order_id=order.id)
+    
+    return redirect("admin_dashboard")
+
+
+# 🗑️ DELETE ORDER (Admin)
+@login_required
+def delete_order(request, order_id):
+    if not request.user.is_staff:
+        return redirect("home")
+        
+    order = get_object_or_404(Order, id=order_id)
+    order.delete()
+    messages.success(request, "Order deleted")
+    return redirect("admin_dashboard")
