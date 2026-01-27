@@ -35,6 +35,10 @@
       transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
       height: auto;
     }
+    .navbar .container{
+      min-width: 1300px !important;
+    }
+
 
     .navbar .navbar-brand,
     .navbar .nav-link {
@@ -71,6 +75,7 @@
       align-items: center;
       box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
       backdrop-filter: blur(10px);
+      width: 500px !important;
     }
 
     body.dark-mode .search-wrapper {
@@ -81,6 +86,7 @@
       border: none;
       background: transparent;
       color: inherit;
+      width: 500px !important;
     }
 
     .search-input:focus {
@@ -562,11 +568,6 @@
                 <a href="{% url 'profile' %}" class="nav-link">
                   {{ user.username }}
                 </a>
-                {% if user.is_staff %}
-                <span class="badge rounded-pill text-bg-dark ms-2">
-                  Admin
-                </span>
-                {% endif %}
               </span>
             </li>
 

@@ -37,9 +37,11 @@
               </div>
             </div>
 
-            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
-              ● Online
-            </span>
+                            {% if user.is_staff %}
+                <span class="badge rounded-pill text-bg-dark ms-2">
+                  Admin
+                </span>
+                {% endif %}
           </div>
 
           <hr class="my-4">
